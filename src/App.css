@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+}
+
+@font-face {
+  font-family: myFont;
+  src: url(../public/font/coolvetica\ rg.otf);
+}
+
+:root {
+  --primary: #48c480;
+}
+
+body {
+  font-family: 'REM', sans-serif;
+}
+
+.container {
+  margin: auto;
+  padding: 10px 0;
+}
+
+header svg {
+  font-size: 30px;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.header-icons::after {
+  content: "0";
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+  display: grid;
+  place-content: center;
+  position: absolute;
+  right: -30px;
+  top: -15px;
+  color: white;
+  background-color: #fba023;
+  border-radius: 50%;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+
+.min-shadow:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25) !important;
+}
+
+.accordion .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root {
+  background-color: var(--primary) !important;
+  color: white !important;
+  border-radius: 100px !important;
+}
+
+.accordion .css-i4bv87-MuiSvgIcon-root {
+  color: white !important;
+}
+
+.accordion .css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
+  margin-bottom: 0 !important;
+}
+
+.accordion .MuiAccordion-rounded {
+  border-radius: 100px !important;
+}
+
+.accordion .Mui-expanded {
+  border-radius: 0px !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: myFont !important;
+}
+
+.overlay-left::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-image: url(./assetes/images/mejores-bg.png);
+  background-size: 30%;
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+.overlay-right::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  top: 0;
+  background-image: url(./assetes/images/vender.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.mnue li {
+  padding-left: 10px;
+  border-bottom: 2px solid white;
+}
+.mnue li:last-child {
+  border-bottom: none !important;
+}
+
+.mnue li a,
+li label {
+  color: white;
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+
+.mnue li a:hover, li label:hover {
+  color: #48c480;
+}
