@@ -36,6 +36,7 @@ function formatFileSize(sizeInBytes) {
 export default function EnviarForm({ isHasTitle }) {
     const MAX_FILE_SIZE_MB = 100;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
     const [universidad, setUniversidad] = useState('');
     const [Facultad, setFacultad] = useState('');
     const [Grado, setGrado] = useState('');
@@ -97,6 +98,11 @@ export default function EnviarForm({ isHasTitle }) {
             setFormData((prevData) => ({ ...prevData, [name]: files }));
             setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
         }
+        if (name === "archivoApunte") {
+            setSubirApunte(files[0].name)
+        } else if (name === "archivoJustificante") {
+            setSubirJustificante(files[0].name)
+        }
     };
 
     return (
@@ -121,6 +127,7 @@ export default function EnviarForm({ isHasTitle }) {
                             freeSolo
                             options={[]}
                             value={Notas}
+                            onChange={(e, value) => { handleInputChange(value, "notas", setNotas) }}
                             onBlur={(e) => setFormData(perv => ({ ...perv, notas: e.target.value }))}
                             renderInput={(params) => (
                                 <TextField
@@ -140,6 +147,7 @@ export default function EnviarForm({ isHasTitle }) {
                             freeSolo
                             options={[]}
                             value={Profesor}
+                            onChange={(e, value) => { handleInputChange(value, "profesor", setProfesor) }}
                             onBlur={e => setFormData(perv => ({ ...perv, profesor: e.target.value }))}
                             renderInput={(params) => (
                                 <TextField
@@ -162,7 +170,7 @@ export default function EnviarForm({ isHasTitle }) {
                                 <div style={{ fontSize: "14px" }}>
                                     <i className='fa-solid fa-file-lines mr-2'></i>
                                     <span>
-                                        {SubirApunte?.name?.slice(0, 20) || "Subir apunte"}....
+                                        {SubirApunte?.slice(0, 20) || "Subir apunte"}....
                                     </span>
                                 </div>
 
@@ -195,7 +203,7 @@ export default function EnviarForm({ isHasTitle }) {
                         <div className='flex justify-between items-center p-2 px-3' style={{ background: "#e4e3e4", borderRadius: "5px" }} >
                             <div style={{ fontSize: "14px" }}>
                                 <i className='fa-solid fa-paperclip mr-2'></i>
-                                {SubirJustificante?.name?.slice(0, 15) || "Justificante de nota"}....
+                                {SubirJustificante?.slice(0, 15) || "Justificante de nota"}....
                             </div>
 
                             <Button component='label' style={{ background: "#48c480", textTransform: "initial" }} variant='contained' startIcon={<CloudUploadIcon />}>
