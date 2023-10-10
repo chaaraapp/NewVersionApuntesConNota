@@ -34,7 +34,6 @@ function formatFileSize(sizeInBytes) {
 
 
 export default function EnviarForm({ isHasTitle }) {
-
     const MAX_FILE_SIZE_MB = 100;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
     const [universidad, setUniversidad] = useState('');
@@ -49,8 +48,6 @@ export default function EnviarForm({ isHasTitle }) {
     const [SubirJustificante, setSubirJustificante] = useState('');
     const [isLoaderLoading, setIsLoaderLoading] = useState(false);
     const [progress, setProgress] = useState(null);
-
-
 
 
     const { formData, setFormData, errors, setErrors } = useDataSetter();
@@ -70,19 +67,13 @@ export default function EnviarForm({ isHasTitle }) {
     };
 
     const handleSubmit = () => {
-        
         validateForm(formData, setErrors);
 
         if (validateForm(formData, setErrors)) {
-
             if (formData.notas >= 7 && formData.notas <= 10) {
-
                 const sendData = new FormularioVenta();
-
                 sendData.post(formData, editorId?.id, setProgress, setIsLoaderLoading);
-
             } else {
-
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
@@ -90,15 +81,11 @@ export default function EnviarForm({ isHasTitle }) {
                 });
 
                 setErrors(perv => ({ ...perv, notas: "Tu nota tiene que ser entre 7 y 10." }));
-
             }
-
         }
-
     }
 
     const handleFileChange = ({ target: { value, name, files } }) => {
-
         if (files[0].size > MAX_FILE_SIZE_BYTES) {
             Swal.fire({
                 icon: "error",
@@ -107,22 +94,15 @@ export default function EnviarForm({ isHasTitle }) {
             });
             return;
         } else {
-
             setFormData((prevData) => ({ ...prevData, [name]: files }));
             setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-
         }
-
     };
 
     return (
-
         <div className={`${isHasTitle ? "mt-10 mb-20" : ""} `}>
-
             <div className='container'>
-
-                {isHasTitle
-                    ?
+                {isHasTitle?
                     <h1 className="font-medium mb-8 mt-8 text-[45px] text-[#004554] text-center">Rellena el formulario y empieza a vender</h1>
                     :
                     <h2 className='mb-5 font-bold text-[23px]'>Formulario de alta de apuntes</h2>
