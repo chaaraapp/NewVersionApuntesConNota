@@ -5,7 +5,6 @@ export default function FormAutocomplete({label, list, inputName, handleInputCha
         <div className={"col-span-"+span}>
             <Autocomplete
                 disablePortal
-                freeSolo
                 options={list}
                 getOptionLabel={(option) => option.nombre}
                 onChange={(e, value) => { handleInputChange(value, inputName, setValue) }}
