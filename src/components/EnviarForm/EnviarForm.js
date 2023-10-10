@@ -133,13 +133,29 @@ export default function EnviarForm({ isHasTitle }) {
                                 <TextField
                                     error={errors?.notas?.length ? true : false}
                                     {...params}
-                                    label='Notas:'
+                                    label='Notas'
                                 />
                             )}
                         />
                     </div>
 
-                    <FormAutocomplete label="Año" list={anoList} setValue={setAno} inputName="ano" error={errors.ano} span="2" handleInputChange={handleInputChange}/>
+                    <div className='col-span-2'>
+                        <Autocomplete
+                            disablePortal
+                            freeSolo
+                            options={[]}
+                            value={Ano}
+                            onChange={(e, value) => { handleInputChange(value, "ano", setAno) }}
+                            onBlur={e => setFormData(perv => ({ ...perv, ano: e.target.value }))}
+                            renderInput={(params) => (
+                                <TextField
+                                    error={errors?.ano?.length ? true : false}
+                                    {...params}
+                                    label='Año'
+                                />
+                            )}
+                        />
+                    </div>
 
                     <div className='col-span-4'>
                         <Autocomplete
@@ -153,7 +169,7 @@ export default function EnviarForm({ isHasTitle }) {
                                 <TextField
                                     error={errors?.profesor?.length ? true : false}
                                     {...params}
-                                    label='Profesor:'
+                                    label='Profesor'
                                 />
                             )}
                         />
