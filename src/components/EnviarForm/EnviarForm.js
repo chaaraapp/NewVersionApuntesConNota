@@ -68,21 +68,9 @@ export default function EnviarForm({ isHasTitle }) {
     };
 
     const handleSubmit = () => {
-        validateForm(formData, setErrors);
-
         if (validateForm(formData, setErrors)) {
-            if (formData.notas >= 7 && formData.notas <= 10) {
-                const sendData = new FormularioVenta();
-                sendData.post(formData, editorId?.id, setProgress, setIsLoaderLoading);
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Tu nota tiene que ser entre 7 y 10.",
-                });
-
-                setErrors(perv => ({ ...perv, notas: "Tu nota tiene que ser entre 7 y 10." }));
-            }
+            const sendData = new FormularioVenta();
+            sendData.post(formData, editorId?.id, setProgress, setIsLoaderLoading);
         }
     }
 

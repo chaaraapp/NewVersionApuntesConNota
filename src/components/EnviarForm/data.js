@@ -209,6 +209,11 @@ const validateForm = (formData, setFormErrors) => {
         errors.archivoJustificante = "Debe adjuntar el justificante";
     }
 
+    if (isNaN(formData.notas) || formData.notas < 6 || formData.notas > 10)  {
+        errors.notas = "Tu nota tiene que ser entre 7 y 10.";
+        
+    }
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
 };
