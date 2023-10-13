@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Asignaturas, Curso, Editor, Facultad, Grado, Universities } from "../../apis/apis";
+import { Asignaturas, Curso, Editor, Facultad, FormularioVenta, Grado, Universities } from "../../apis/apis";
+import { styled } from "@mui/material/styles";
+import { fireSwal } from "../../assetes/utils/utils";
 
 const useDataSetter = () => {
     const [formData, setFormData] = useState({
@@ -34,9 +36,45 @@ const useDataSetter = () => {
     return { formData, setFormData, errors, setErrors };
 }
 
+const useDataGetter = () => {
+
+    const MAX_FILE_SIZE_MB = 100;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    const [UniversidadValue, setUniversidadValue] = useState({ nombre: "" });
+    const [Facultad, setFacultad] = useState({ nombre: "" });
+    const [Grado, setGrado] = useState({ nombre: "" });
+    const [Asignatura, setAsignatura] = useState({ nombre: "" });
+    const [Curso, setCurso] = useState({ nombre: "" });
+    const [Notas, setNotas] = useState('');
+    const [Ano, setAno] = useState({ nombre: "" });
+    const [Profesor, setProfesor] = useState('');
+    const [SubirApunte, setSubirApunte] = useState('');
+    const [SubirJustificante, setSubirJustificante] = useState('');
+    const [isLoaderLoading, setIsLoaderLoading] = useState(false);
+    const [progress, setProgress] = useState(null);
+
+    return {
+        MAX_FILE_SIZE_BYTES,
+        UniversidadValue, setUniversidadValue,
+        Facultad, setFacultad,
+        Grado, setGrado,
+        Asignatura, setAsignatura,
+        Curso, setCurso,
+        Notas, setNotas,
+        Ano, setAno,
+        Profesor, setProfesor,
+        SubirApunte, setSubirApunte,
+        SubirJustificante, setSubirJustificante,
+        isLoaderLoading, setIsLoaderLoading,
+        progress, setProgress
+    }
+
+}
+
 const useUniversitiesLoader = () => {
 
     const [universidadList, setUniversidadList] = useState([]);
+    const { UniversidadValue, setFacultad, setGrado, setAsignatura } = useDataGetter();
 
     // Fetch Universities
     const universitiesUtailty = new Universities();
@@ -46,6 +84,11 @@ const useUniversitiesLoader = () => {
         universitiesUtailty.get(setUniversidadList);
 
     }, []);
+
+    useEffect(() => {
+
+
+    }, [UniversidadValue]);
 
     return { universidadList, setUniversidadList }
 
@@ -213,6 +256,30 @@ const validateForm = (formData, setFormErrors) => {
     return Object.keys(errors).length === 0;
 };
 
+const handleSubmit = (formData, setErrors, editorId, setProgress, setIsLoaderLoading) => {
+
+    validateForm(formData, setErrors);
+
+    if (validateForm(formData, setErrors)) {
+
+        if (formData.notas >= 7 && formData.notas <= 10) {
+
+            const sendData = new FormularioVenta();
+
+            sendData.post(formData, editorId?.id, setProgress, setIsLoaderLoading);
+
+        } else {
+
+            fireSwal('error', 'Oops...', 'Tu nota tiene que ser entre 7 y 10.');
+
+            setErrors(perv => ({ ...perv, notas: "Tu nota tiene que ser entre 7 y 10." }));
+
+        }
+
+    }
+
+}
+
 const useGetEditor = () => {
 
     const editorUtailty = new Editor();
@@ -229,6 +296,99 @@ const useGetEditor = () => {
 
 }
 
+function formatFileSize(sizeInBytes) {
+    if (sizeInBytes === 0) {
+        return "0 Bytes";
+    }
+
+    const sizeNames = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    const index = Math.floor(Math.log(sizeInBytes) / Math.log(1024));
+    const size = (sizeInBytes / Math.pow(1024, index)).toFixed(2);
+
+    return `${size} ${sizeNames[index]}`;
+}
+
+const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+});
+
+const useGetLists = (UniversidadValue, Asignatura, Grado, Facultad, Curso) => {
+
+    const { universidadList } = useUniversitiesLoader();
+    const { facultadList } = useFacultadLoader(universidadList, UniversidadValue?.codigo);
+    const { gradoList } = useGradoLoader(Facultad);
+    const { asignaturasList } = useAsignaturasLoader(Grado);
+    const { cursoList } = useCursoLoader(Asignatura);
+    const { editorId } = useGetEditor();
+    const { anoList } = useAnoLoader(Curso);
+
+    return { universidadList, facultadList, gradoList, asignaturasList, cursoList, editorId, anoList }
+
+}
+
+const useResetInput = (UniversidadValue, Facultad, Grado, Curso, setFacultad, setGrado, setAsignatura, setCurso, setAno, setProfesor, setNotas, Asignatura) => {
+
+    // reset Inputs depended on Univeridad
+    useEffect(() => {
+
+        setFacultad({ nombre: "" });
+        setGrado({ nombre: "" });
+        setAsignatura({ nombre: "" });
+        setCurso({ nombre: "" });
+        setNotas('');
+        setAno({ nombre: "" });
+        setProfesor('');
+
+    }, [UniversidadValue]);
+    // reset Inputs depended on Facultad
+    useEffect(() => {
+
+        setGrado({ nombre: "" });
+        setAsignatura({ nombre: "" });
+        setCurso({ nombre: "" });
+        setNotas('');
+        setAno({ nombre: "" });
+        setProfesor('');
+
+    }, [Facultad]);
+    // reset Inputs depended on Grado
+    useEffect(() => {
+
+        setAsignatura({ nombre: "" });
+        setCurso({ nombre: "" });
+        setNotas('');
+        setAno({ nombre: "" });
+        setProfesor('');
+
+    }, [Grado]);
+    // reset Inputs depended on Asignatura
+    useEffect(() => {
+
+        setCurso({ nombre: "" });
+        setNotas('');
+        setAno({ nombre: "" });
+        setProfesor('');
+
+    }, [Asignatura]);
+    // reset Inputs depended on Curso
+    useEffect(() => {
+
+        setNotas('');
+        setAno({ nombre: "" });
+        setProfesor('');
+
+    }, [Curso]);
+    return {};
+}
+
 export {
     useDataSetter,
     useUniversitiesLoader,
@@ -237,6 +397,11 @@ export {
     useAsignaturasLoader,
     useCursoLoader,
     useAnoLoader,
-    validateForm,
-    useGetEditor
+    handleSubmit,
+    useGetEditor,
+    formatFileSize,
+    VisuallyHiddenInput,
+    useDataGetter,
+    useGetLists,
+    useResetInput
 }

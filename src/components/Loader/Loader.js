@@ -2,12 +2,12 @@ import "./index.css";
 
 export default function Loader({ progress }) {
     return (
-        <div className='fixed left-0 top-0 z-[111111111111] w-full h-[100vh] bg-[#101010] flex items-center justify-center'>
+
+        <div className='fixed left-0 top-0 z-[1000] w-full h-[100vh] bg-[#101010] flex items-center justify-center'>
 
             <h2 className='text-white transition-all text-[30px] absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-[99999999999999]'>{parseInt(progress)}<span>%</span></h2>
 
             <div class="container relative w-[900px] flex justify-around">
-
 
                 <div class="card">
 
@@ -32,5 +32,6 @@ export default function Loader({ progress }) {
             </div>
 
         </div>
+
     )
 }

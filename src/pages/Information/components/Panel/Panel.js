@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faCreditCard, faFileImport, faMapMarkerAlt, faPowerOff, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { logout } from '../../../../assetes/utils/utils';
 
+
 export default function Panel({ steper, setSteper }) {
 
     return (
@@ -58,6 +59,7 @@ export default function Panel({ steper, setSteper }) {
 
                     <FontAwesomeIcon icon={faPowerOff} className='me-2 text-[18px]' />
                     Cerrar sesión
+
                 </Button>
 
             </div>

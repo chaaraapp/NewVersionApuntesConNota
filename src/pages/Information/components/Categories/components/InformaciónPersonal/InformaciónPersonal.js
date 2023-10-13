@@ -1,30 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Button from '@mui/material/Button';
-import { User } from '../../../../../../apis/apis';
-import { useDataSetter, handelChangeInput } from './data';
+import { useDataSetter, handelChangeInput, useHandleSubmit } from './data';
 
 export default function InformaciónPersonal() {
-
-    const userUtailty = new User();
 
     const [userInfo, setUserInfo] = useState({});
 
     const { inputsValue, setInputsValue } = useDataSetter(userInfo);
 
-    useEffect(() => {
+    const { handelSubmit } = useHandleSubmit(inputsValue, setUserInfo);
 
-        userUtailty.getUserInfo(setUserInfo);
-
-    }, []);
-
-    const handelSubmit = e => {
-
-        e.preventDefault();
-
-        userUtailty.update(inputsValue);
-
-    }
-    console.log(userInfo)
     return (
         <section>
 
@@ -36,7 +21,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputNombre' className='mb-2 inline-block'>Nombre</label>
 
-                    <input type='text' onChange={e => handelChangeInput('nombreEnvio', e.target.value, setInputsValue)} defaultValue={userInfo?.nombreEnvio} className='form-control' placeholder='Nombre' id='inputNombre' />
+                    <input type='text' value={inputsValue.nombreEnvio} onChange={e => handelChangeInput('nombreEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='Nombre' id='inputNombre' />
 
                 </div>
 
@@ -44,7 +29,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputDNI/NIF' className='mb-2 inline-block'>DNI/NIF</label>
 
-                    <input type='text' defaultValue={userInfo?.nifEnvio} onChange={e => handelChangeInput('nifEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='DNI/NIF' id='inputDNI/NIF' />
+                    <input type='text' value={inputsValue.nifEnvio} onChange={e => handelChangeInput('nifEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='DNI/NIF' id='inputDNI/NIF' />
 
                 </div>
 
@@ -52,7 +37,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputDirección' className='mb-2 inline-block'> Dirección</label>
 
-                    <input type='text' onChange={e => handelChangeInput('direccionEnvio', e.target.value, setInputsValue)} className='form-control' defaultValue={userInfo?.direccionEnvio} id='inputDirección' placeholder='inputDirección' />
+                    <input type='text' value={inputsValue.direccionEnvio} onChange={e => handelChangeInput('direccionEnvio', e.target.value, setInputsValue)} className='form-control' id='inputDirección' placeholder='inputDirección' />
 
                 </div>
 
@@ -60,7 +45,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputTeléfono ' className='mb-2 inline-block'>Teléfono</label>
 
-                    <input type='text' onChange={e => handelChangeInput('telefonoEnvio', e.target.value, setInputsValue)} className='form-control' defaultValue={userInfo?.telefonoEnvio} id='inputTeléfono' placeholder='Teléfono' />
+                    <input type='text' value={inputsValue.telefonoEnvio} onChange={e => handelChangeInput('telefonoEnvio', e.target.value, setInputsValue)} className='form-control' id='inputTeléfono' placeholder='Teléfono' />
 
                 </div>
 
@@ -68,7 +53,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputMóvil' className='mb-2 inline-block'> Móvil </label>
 
-                    <input type='text' onChange={e => handelChangeInput('movilEnvio', e.target.value, setInputsValue)} className='form-control' defaultValue={userInfo?.movilEnvio} placeholder='Móvil' id='inputMóvil' />
+                    <input type='text' value={inputsValue.movilEnvio} onChange={e => handelChangeInput('movilEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='Móvil' id='inputMóvil' />
 
                 </div>
 
@@ -76,7 +61,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputCódigo' className='mb-2 inline-block'>Código Postal</label>
 
-                    <input type='text' onChange={e => handelChangeInput('codigoPostalEnvio', e.target.value, setInputsValue)} className='form-control' defaultValue={userInfo?.codigoPostalEnvio} placeholder='Código Postal' id='inputCódigo' />
+                    <input type='text' value={inputsValue.codigoPostalEnvio} onChange={e => handelChangeInput('codigoPostalEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='Código Postal' id='inputCódigo' />
 
                 </div>
 
@@ -92,7 +77,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputProvincia' className='mb-2 inline-block'>Provincia </label>
 
-                    <input type='text'  onChange={e => handelChangeInput('provinciaEnvio', e.target.value, setInputsValue)} defaultValue={userInfo?.provinciaEnvio} className='form-control' placeholder='Provincia' id='inputProvincia' />
+                    <input type='text' value={inputsValue.provinciaEnvio} onChange={e => handelChangeInput('provinciaEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='Provincia' id='inputProvincia' />
 
                 </div>
 
@@ -100,7 +85,7 @@ export default function InformaciónPersonal() {
 
                     <label htmlFor='inputPaís' className='mb-2 inline-block'>País:</label>
 
-                    <input type='text' onChange={e => handelChangeInput('paisEnvio', e.target.value, setInputsValue)} defaultValue={userInfo?.paisEnvio} className='form-control' placeholder='País' id='inputPaís' />
+                    <input type='text' value={inputsValue.paisEnvio} onChange={e => handelChangeInput('paisEnvio', e.target.value, setInputsValue)} className='form-control' placeholder='País' id='inputPaís' />
 
                 </div>
 

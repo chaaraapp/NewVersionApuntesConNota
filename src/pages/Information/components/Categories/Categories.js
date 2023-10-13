@@ -1,8 +1,11 @@
-import React from 'react'
 import { InformaciónPersonal, MisPedidos, SaldoFavor } from './components'
 import Formulario from '../../../Formulario'
+import { ToBeEditor } from '../../../../components'
+import { useFetchEditorInfo } from './data';
 
-export default function Categories({ setSteper, steper }) {
+export default function Categories({ steper }) {
+
+    const { editorId, resumenApuntesData } = useFetchEditorInfo(steper);
 
     return (
 
@@ -12,7 +15,7 @@ export default function Categories({ setSteper, steper }) {
 
             {steper === 2 ? <MisPedidos /> : null}
 
-            {steper === 4 ? <Formulario isHasTitle={false} /> : null}
+            {steper === 4 ? editorId?.id ? <Formulario resumenApuntesData={resumenApuntesData} isHasTitle={false} /> : <ToBeEditor isHasTitle={false} /> : null}
 
             {steper === 5 ? <SaldoFavor /> : null}
 

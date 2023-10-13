@@ -3,40 +3,39 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useState } from 'react';
-import { data } from './data';
+import { data, useToggleExpanded } from './data';
 
 export default function AccordionQuestions() {
-    const [expanded, setExpanded] = useState(false);
 
-    const handleChange =
-        (panel) => (event, isExpanded) => {
-            setExpanded(isExpanded ? panel : false);
-        };
+    const { expanded, setExpanded, handleChange } = useToggleExpanded();
 
     const renderAccordion = data.map((item, index) => {
 
         return <Accordion className='!mb-5' key={index} expanded={expanded === (item.id)} onChange={handleChange(item.id)}>
-            <AccordionSummary
-                className='!bg-[var(--primary)] !text-white'
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1bh-content"
-            >
-                <Typography className='flex-1'>
-                    {item.question}
-                </Typography>
+
+            <AccordionSummary className='!bg-[var(--primary)] !rounded-[100px] before:!h-0 !text-white' expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content"  >
+
+                <Typography className='flex-1 before:!h-0'> {item.question}</Typography>
+
             </AccordionSummary>
+
             <AccordionDetails>
-                <Typography>
-                    {item.answer}
-                </Typography>
+
+                <Typography>  {item.answer} </Typography>
+
             </AccordionDetails>
+
         </Accordion>
 
-    })
+    });
+
     return (
+
         <div className='accordion'>
+
             {renderAccordion}
+
         </div>
+
     );
 }

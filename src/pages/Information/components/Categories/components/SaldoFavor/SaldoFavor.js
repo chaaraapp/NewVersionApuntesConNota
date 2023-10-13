@@ -12,5 +12,6 @@ export default function SaldoFavor() {
             <button className='p-2 rounded-[5px] bg-[#cdfecc] text-black'> Cargar saldo </button>
 
         </div>
+
     );
 }

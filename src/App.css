@@ -11,6 +11,7 @@
 
 :root {
   --primary: #48c480;
+  --cartCount: '0';
 }
 
 body {
@@ -19,7 +20,7 @@ body {
 
 .container {
   margin: auto;
-  padding: 10px 0;
+  padding: 10px;
 }
 
 header svg {
@@ -28,20 +29,6 @@ header svg {
   color: #6c757d;
 }
 
-.header-icons::after {
-  content: "0";
-  width: 30px;
-  height: 30px;
-  font-size: 15px;
-  display: grid;
-  place-content: center;
-  position: absolute;
-  right: -30px;
-  top: -15px;
-  color: white;
-  background-color: #fba023;
-  border-radius: 50%;
-}
 
 .form-control {
   display: block;
@@ -69,12 +56,6 @@ header svg {
 
 .min-shadow:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25) !important;
-}
-
-.accordion .css-sh22l5-MuiButtonBase-root-MuiAccordionSummary-root {
-  background-color: var(--primary) !important;
-  color: white !important;
-  border-radius: 100px !important;
 }
 
 .accordion .css-i4bv87-MuiSvgIcon-root {
@@ -131,6 +112,7 @@ h6 {
   padding-left: 10px;
   border-bottom: 2px solid white;
 }
+
 .mnue li:last-child {
   border-bottom: none !important;
 }
@@ -145,7 +127,18 @@ li label {
   cursor: pointer;
 }
 
+.css-1elwnq4-MuiPaper-root-MuiAccordion-root:before {
+  height: 0 !important;
+}
 
-.mnue li a:hover, li label:hover {
+.mnue li a:hover,
+li label:hover {
   color: #48c480;
+}
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #10c47f !important;
+  font-weight: bolder;
 }

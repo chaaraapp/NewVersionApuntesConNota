@@ -1,8 +1,6 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
 import { SignUpWithGoogle } from "../../components";
-import { Auth } from "../../apis/apis";
+import { useHandleSubmit } from "./data";
 
 const handelChangeInput = (name, value, state) => {
     return state(perv => ({ ...perv, [name]: value }));
@@ -10,25 +8,11 @@ const handelChangeInput = (name, value, state) => {
 
 const Register = () => {
 
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        nombre: "",
-        apellidos: ""
-    });
-
-    const handelSubmit = e => {
-        e.preventDefault();
-
-        const auth = new Auth('https://apiapn.copisterialowcost.info/register');
-
-        auth.postRegister(formData);
-
-    }
+    const { formData, setFormData, handelSubmit } = useHandleSubmit();
 
 
     return (
-        <div className="pt-[7rem] pb-[3rem] flex justify-center items-center bg-[var(--primary)]">
+        <div className="pt-[7rem] pb-[3rem] flex justify-center items-center bg-[var(--primary)] px-5 sm:px-0">
 
             <div className="form-container w-[30rem] m-auto p-[8px] border border-[#ccc] bg-[#f5f5f5] rounded-[8px]" style={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)" }}>
 

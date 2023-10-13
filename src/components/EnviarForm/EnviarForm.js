@@ -1,66 +1,23 @@
 import { Autocomplete, Button, TextField } from '@mui/material';
-import React, { useState } from 'react';
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
-import Swal from 'sweetalert2';
-import { useAnoLoader, useAsignaturasLoader, useCursoLoader, useDataSetter, useFacultadLoader, useGetEditor, useGradoLoader, useUniversitiesLoader, validateForm } from './data';
 import Loader from '../Loader';
-import { FormularioVenta } from '../../apis/apis';
 
-const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-});
-
-function formatFileSize(sizeInBytes) {
-    if (sizeInBytes === 0) {
-        return "0 Bytes";
-    }
-
-    const sizeNames = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    const index = Math.floor(Math.log(sizeInBytes) / Math.log(1024));
-    const size = (sizeInBytes / Math.pow(1024, index)).toFixed(2);
-
-    return `${size} ${sizeNames[index]}`;
-}
+import { formatFileSize, VisuallyHiddenInput, useDataSetter, handleSubmit, useDataGetter, useGetLists, useResetInput } from './data';
+import FormAutocomplete from './components/FormAutocomplete/FormAutocomplete';
+import { fireSwal } from '../../assetes/utils/utils';
 
 
 export default function EnviarForm({ isHasTitle }) {
 
-    const MAX_FILE_SIZE_MB = 100;
-    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
-    const [UniversidadValue, setUniversidadValue] = useState('');
-    const [Facultad, setFacultad] = useState('');
-    const [Grado, setGrado] = useState('');
-    const [Asignatura, setAsignatura] = useState('');
-    const [Curso, setCurso] = useState('');
-    const [Notas, setNotas] = useState('');
-    const [Ano, setAno] = useState('');
-    const [Profesor, setProfesor] = useState('');
-    const [SubirApunte, setSubirApunte] = useState('');
-    const [SubirJustificante, setSubirJustificante] = useState('');
-    const [isLoaderLoading, setIsLoaderLoading] = useState(false);
-    const [progress, setProgress] = useState(null);
-
-
-
+    const {
+        MAX_FILE_SIZE_BYTES, UniversidadValue, setUniversidadValue, Facultad, setFacultad,
+        Ano, setAno, Profesor, setProfesor, SubirApunte, SubirJustificante, isLoaderLoading, setIsLoaderLoading,
+        Grado, setGrado, Asignatura, setAsignatura, Curso, setCurso, Notas, setNotas, progress, setProgress
+    } = useDataGetter();
 
     const { formData, setFormData, errors, setErrors } = useDataSetter();
-    const { universidadList, setUniversidadList } = useUniversitiesLoader();
-    const { facultadList, setFacultadList } = useFacultadLoader(universidadList, UniversidadValue?.codigo);
-    const { gradoList, setGradoList } = useGradoLoader(Facultad);
-    const { asignaturasList, setasignaturasList } = useAsignaturasLoader(Grado);
-    const { cursoList, setCursoList } = useCursoLoader(Asignatura);
-    const { editorId, setEditorId } = useGetEditor();
-    const { anoList } = useAnoLoader(Curso);
 
+    const { universidadList, facultadList, gradoList, asignaturasList, cursoList, editorId, anoList } = useGetLists(UniversidadValue, Asignatura, Grado, Facultad, Curso)
 
     const handleInputChange = (value, inputName, state) => {
         setFormData((prevData) => ({ ...prevData, [inputName]: value?.codigo || value?.id || value?.nombre }));
@@ -68,43 +25,12 @@ export default function EnviarForm({ isHasTitle }) {
         state(value)
     };
 
-    const handleSubmit = () => {
-        
-        validateForm(formData, setErrors);
-
-        if (validateForm(formData, setErrors)) {
-
-            if (formData.notas >= 7 && formData.notas <= 10) {
-
-                const sendData = new FormularioVenta();
-
-                sendData.post(formData, editorId?.id, setProgress, setIsLoaderLoading);
-
-            } else {
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Tu nota tiene que ser entre 7 y 10.",
-                });
-
-                setErrors(perv => ({ ...perv, notas: "Tu nota tiene que ser entre 7 y 10." }));
-
-            }
-
-        }
-
-    }
-
     const handleFileChange = ({ target: { value, name, files } }) => {
 
         if (files[0].size > MAX_FILE_SIZE_BYTES) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "El tamaño del archivo tiene que ser menos de 100 MB.",
-            });
-            return;
+
+            return fireSwal('error', 'Oops...', 'El tamaño del archivo tiene que ser menos de 100 MB.');
+
         } else {
 
             setFormData((prevData) => ({ ...prevData, [name]: files }));
@@ -113,6 +39,8 @@ export default function EnviarForm({ isHasTitle }) {
         }
 
     };
+
+    const _ = useResetInput(UniversidadValue, Facultad, Grado, Curso, setFacultad, setGrado, setAsignatura, setCurso, setAno, setProfesor, setNotas, Asignatura);
 
     return (
 
@@ -129,155 +57,34 @@ export default function EnviarForm({ isHasTitle }) {
 
                 <div className='grid grid-cols-12 gap-5'>
 
-                    <div className='col-span-6'>
 
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={Array.isArray(universidadList) ? universidadList : []}
-                            getOptionLabel={(option) => option.nombre}
-                            onChange={(e, value) => { handleInputChange(value, 'universidad', setUniversidadValue); }}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.universidad?.length ? true : false}
-                                    {...params}
-                                    label='Universidad:'
-                                />
-                            )}
-                        />
 
-                    </div>
+                    <FormAutocomplete label={'Universidad:'} value={UniversidadValue} span={6} list={universidadList} setValue={setUniversidadValue} inputName={'universidad'} error={errors.universidad} handleInputChange={handleInputChange} />
 
-                    <div className='col-span-6'>
+                    <FormAutocomplete label={'Facultad:'} value={Facultad} span={6} list={facultadList} setValue={setFacultad} inputName={'facultad'} error={errors.facultad} handleInputChange={handleInputChange} />
 
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={Array.isArray(facultadList) ? facultadList : []}
-                            getOptionLabel={(option) => option.nombre}
-                            onChange={(e, value) => handleInputChange(value, 'facultad', setFacultad)}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.facultad?.length ? true : false}
-                                    {...params}
-                                    label='Facultad:'
-                                />
-                            )}
-                        />
+                    <FormAutocomplete label={'Grado:'} value={Grado} span={6} list={gradoList} setValue={setGrado} inputName={'grado'} error={errors.grado} handleInputChange={handleInputChange} />
+
+                    <FormAutocomplete label={'Asignatura:'} value={Asignatura} span={6} list={asignaturasList} setValue={setAsignatura} inputName={'asignatura'} error={errors.asignatura} handleInputChange={handleInputChange} />
+
+                    <FormAutocomplete label={'Curso:'} value={Curso} span={4} list={cursoList} setValue={setCurso} inputName={'curso'} error={errors.curso} handleInputChange={handleInputChange} />
+
+
+                    <div className='col-span-12 lg:col-span-2'>
+
+                        <Autocomplete disablePortal freeSolo options={[]} value={Notas} onBlur={(e) => setFormData(perv => ({ ...perv, notas: e.target.value }))} renderInput={(params) => (<TextField error={errors?.notas?.length ? true : false}  {...params} label='Notas:' />)} />
 
                     </div>
 
-                    <div className='col-span-6'>
+                    <div className='col-span-12 lg:col-span-2'>
 
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={Array.isArray(gradoList) ? gradoList : []}
-                            getOptionLabel={(option) => option.nombre}
-                            onChange={(e, value) => handleInputChange(value, 'grado', setGrado)}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.grado?.length ? true : false}
-                                    {...params}
-                                    label='Grado:'
-                                />
-                            )}
-                        />
+                        <Autocomplete disablePortal freeSolo value={Ano} options={Array.isArray(anoList) ? anoList : []} getOptionLabel={(option) => option.nombre} onChange={(e, value) => handleInputChange(value, 'ano', setAno)} renderInput={(params) => (<TextField error={errors?.ano?.length ? true : false}   {...params} label='Ano:' />)} />
 
                     </div>
 
-                    <div className='col-span-6'>
+                    <div className='col-span-12 lg:col-span-4'>
 
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={Array.isArray(asignaturasList) ? asignaturasList : []}
-                            getOptionLabel={(option) => option.nombre}
-                            onChange={(e, value) => handleInputChange(value, 'asignatura', setAsignatura)}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.asignatura?.length ? true : false}
-                                    {...params}
-                                    label='Asignatura:'
-                                />
-                            )}
-                        />
-
-                    </div>
-
-                    <div className='col-span-4'>
-
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={Array.isArray(cursoList) ? cursoList : []}
-                            getOptionLabel={(option) => option.nombre}
-                            onChange={(e, value) => handleInputChange(value, 'curso', setCurso)}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.curso?.length ? true : false}
-                                    {...params}
-                                    label='Curso:'
-                                />
-                            )}
-                        />
-
-                    </div>
-
-                    <div className='col-span-2'>
-
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={[]}
-                            value={Notas}
-                            onBlur={(e) => setFormData(perv => ({ ...perv, notas: e.target.value }))}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.notas?.length ? true : false}
-                                    {...params}
-                                    label='Notas:'
-                                />
-                            )}
-                        />
-
-                    </div>
-
-                    <div className='col-span-2'>
-
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={Array.isArray(anoList) ? anoList : []}
-                            getOptionLabel={(option) => option.nombre}
-                            onChange={(e, value) => handleInputChange(value, 'ano', setAno)}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.ano?.length ? true : false}
-                                    {...params}
-                                    label='Ano:'
-                                />
-                            )}
-                        />
-
-                    </div>
-
-                    <div className='col-span-4'>
-
-                        <Autocomplete
-                            disablePortal
-                            freeSolo
-                            options={[]}
-                            value={Profesor}
-                            onBlur={e => setFormData(perv => ({ ...perv, profesor: e.target.value }))}
-                            renderInput={(params) => (
-                                <TextField
-                                    error={errors?.profesor?.length ? true : false}
-                                    {...params}
-                                    label='Profesor:'
-                                />
-                            )}
-                        />
+                        <Autocomplete disablePortal freeSolo value={Profesor} options={[]} onBlur={e => setFormData(perv => ({ ...perv, profesor: e.target.value }))} renderInput={(params) => (<TextField error={errors?.profesor?.length ? true : false}  {...params} label='Profesor:' />)} />
 
                     </div>
 
@@ -292,20 +99,12 @@ export default function EnviarForm({ isHasTitle }) {
                     <div className='col-span-12 lg:col-span-6 mb-3 lg:mb-0'>
 
                         <div className='input-file m-0'>
-                            <div className='flex justify-between items-center p-2 px-3' style={{ background: "#e4e3e4", borderRadius: "5px" }} >
-                                <div style={{ fontSize: "14px" }}>
 
-                                    <i className='fa-solid fa-file-lines mr-2'></i>
+                            <div className='flex justify-between items-center p-2 px-3 bg-[#e4e3e4] rounded-[5px]' >
 
-                                    <span>
+                                <div className='text-[14px]' style={{ fontSize: "14px" }}> {SubirApunte?.name?.slice(0, 20) || "Subir apunte"}.... </div>
 
-                                        {SubirApunte?.name?.slice(0, 20) || "Subir apunte"}....
-
-                                    </span>
-                                </div>
-
-                                <Button component='label' variant='contained'
-                                    style={{ background: "#48c480", textTransform: "initial" }} startIcon={<CloudUploadIcon />} >
+                                <Button component='label' variant='contained' style={{ background: "#48c480", textTransform: "initial" }} startIcon={<CloudUploadIcon />} >
 
                                     Subir apunte
 
@@ -315,78 +114,56 @@ export default function EnviarForm({ isHasTitle }) {
 
                             </div>
 
-                            {formData?.archivoApunte[0]?.size ? (
-                                <p className=' font-bold mt-1 opacity-70 text-[14px]' style={{ textAlign: "start" }}>
-                                    Tamaño del archivo: {formatFileSize(formData?.archivoApunte[0]?.size)}
-                                </p>
-                            ) : (
-                                ""
-                            )}
-                            <p className={`error-message text-[red] text-[12px] mt-2 h-[16px] transition-all text-center ${errors?.archivoApunte?.length ? "block" : "hidden"}`} >
+                            {
 
-                                {errors?.archivoApunte}
+                                formData?.archivoApunte[0]?.size ?
 
-                            </p>
+                                    <p className=' font-bold mt-1 opacity-70 text-[14px]' style={{ textAlign: "start" }}>Tamaño del archivo: {formatFileSize(formData?.archivoApunte[0]?.size)}</p>
+
+                                    :
+                                    <p className={`error-message text-[red] text-[12px] mt-2 h-[16px] transition-all text-center ${errors?.archivoApunte?.length ? "block" : "hidden"}`}>{errors?.archivoApunte}</p>
+
+                            }
+
+                            <div />
+
                         </div>
 
-                        <p className={`error-message ${errors?.archivoApunte?.length ? "hidden" : "block"}`}>
+                        <p className={`error-message ${errors?.archivoApunte?.length ? "hidden" : "block"}`}>{errors?.archivoApunte}</p>
 
-                            {errors?.archivoApunte}
-
-                        </p>
                     </div>
 
-                    <div className='col-span-12 lg:col-span-6'>
-                        <div className='flex justify-between items-center p-2 px-3' style={{ background: "#e4e3e4", borderRadius: "5px" }} >
+                    <div className='col-span-12  lg:col-span-6'>
 
-                            <div style={{ fontSize: "14px" }}>
+                        <div className='flex justify-between items-center p-2 px-3 bg-[#e4e3e4] rounded-[5px]' >
 
-                                <i className='fa-solid fa-paperclip mr-2'></i>
+                            <div className='text-[14px]'> {SubirJustificante?.name?.slice(0, 15) || "Justificante de nota"}....   </div>
 
-                                {SubirJustificante?.name?.slice(0, 15) || "Justificante de nota"}....
-
-                            </div>
-
-                            <Button component='label' style={{ background: "#48c480", textTransform: "initial" }}
-                                variant='contained' startIcon={<CloudUploadIcon />}   >
+                            <Button component='label' style={{ background: "#48c480", textTransform: "initial" }} variant='contained' startIcon={<CloudUploadIcon />}   >
 
                                 Subir justificante
+
                                 <VisuallyHiddenInput type='file' accept='.pdf, .doc, .docx' name='archivoJustificante' onChange={handleFileChange} />
 
                             </Button>
 
                         </div>
 
-                        {formData?.archivoJustificante[0]?.size ? (
-                            <p className=' font-bold mt-1 opacity-70 text-[14px]' style={{ textAlign: "start" }}>
-                                Tamaño del archivo: {formatFileSize(formData?.archivoJustificante[0]?.size)}
-                            </p>
-                        ) : (
-                            ""
-                        )}
-                        <p className={`error-message text-[red] text-[12px] mt-2 h-[16px] transition-all text-center ${errors?.archivoJustificante?.length ? "block" : "hidden"}`} >
+                        {
+                            formData?.archivoJustificante[0]?.size ?
 
-                            {errors?.archivoJustificante}
+                                <p className=' font-bold mt-1 opacity-70 text-[14px]' style={{ textAlign: "start" }}>  Tamaño del archivo: {formatFileSize(formData?.archivoJustificante[0]?.size)} </p>
 
-                        </p>
+                                :
+                                null
+                        }
+                        <p className={`error-message text-[red] text-[12px] mt-2 h-[16px] transition-all text-center ${errors?.archivoJustificante?.length ? "block" : "hidden"}`} >{errors?.archivoJustificante} </p>
 
                     </div>
 
                     <div className='col-span-12 flex items-start justify-center'>
 
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            className='w-[75%] p-2  !my-10'
-                            onClick={handleSubmit}
-                            style={{
-                                background: "#48c480",
-                                border: "none",
-                                textTransform: "initial",
-                                outline: "none",
-                                color: "white",
-                                marginBottom: `${isHasTitle ? "100px" : "0px"}`,
-                            }}>
+                        <Button type='submit' variant='contained' className='w-[75%] p-2  !my-10 border-none text-white' onClick={e => handleSubmit(formData, setErrors, editorId, setProgress, setIsLoaderLoading)} style={{ textTransform: "initial", color: "white", background: "#48c480", marginBottom: `${isHasTitle ? "100px" : "0px"}`, }}>
                             Enviar solicitud
                         </Button>
 
@@ -405,7 +182,7 @@ export default function EnviarForm({ isHasTitle }) {
                     null
             }
 
-        </div>
+        </div >
 
     )
 }

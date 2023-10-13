@@ -2,7 +2,9 @@ import React from "react";
 
 export default function MisPedidos() {
     return (
+
         <div>
+
             <div className="select-none mb-1">
 
                 <input className='me-2 cursor-pointer' type='checkbox' id='PedidosRealizados' />
@@ -35,6 +37,7 @@ export default function MisPedidos() {
             </div>
 
             <div className='select-none mb-3'>
+
                 <input className='me-2 cursor-pointer' type='checkbox' id='QuieroBeneficiarme' />
 
                 <label className='cursor-pointer' htmlFor='QuieroBeneficiarme'>
@@ -44,9 +47,7 @@ export default function MisPedidos() {
                 </label>
 
             </div>
-            <small>
-                Doy consentimiento para ver/ejecutar las siguientes acciones
-            </small>
+            <small> Doy consentimiento para ver/ejecutar las siguientes acciones </small>
         </div>
     );
 }

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export const data = [
     {
         id: "panel1",
@@ -56,3 +58,18 @@ export const data = [
             "El acceso al expediente académico está restringido y es confidencial. Únicamente el equipo de APUNTES CON NOTA tiene la autorización para visualizarlo, con el propósito de verificar que los apuntes cumplen con el requisito de calificación mínima de 7. En ningún caso, otros usuarios tienen permiso para acceder o visualizar dicho expediente, garantizando así la privacidad y seguridad de tu información académica.",
     },
 ];
+
+const useToggleExpanded = () => {
+
+    const [expanded, setExpanded] = useState(false);
+
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+    return { expanded, setExpanded, handleChange };
+}
+
+export {
+    useToggleExpanded
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import { fireSwal } from "../assetes/utils/utils";
 
 class Auth {
 
@@ -31,11 +32,7 @@ class Auth {
             })
             .catch(error => {
 
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: error?.response?.data?.message,
-                })
+                fireSwal('error', 'Oops...', error?.response?.data?.message);
 
             });
 
@@ -69,11 +66,7 @@ class Auth {
             })
             .catch(error => {
 
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: error?.response?.data?.message,
-                })
+                fireSwal('error', 'Oops...', error?.response?.data?.message);
 
             })
 
@@ -148,15 +141,15 @@ class User {
     update(data) {
 
         const defaultData = {
-            nifEnvio: data?.nifEnvio || "stringst",
-            nombreEnvio: data?.nombreEnvio || "string",
-            direccionEnvio: data?.direccionEnvio || 'Dirección',
-            codigoPostalEnvio: data?.codigoPostalEnvio || "string",
-            ciudadEnvio: data?.ciudadEnvio || "string",
-            provinciaEnvio: data?.provinciaEnvio || "string",
-            paisEnvio: data?.paisEnvio || "string",
-            movilEnvio: data?.movilEnvio || "stringstr",
-            telefonoEnvio: data?.telefonoEnvio || "0123456789",
+            nifEnvio: data?.nifEnvio,
+            nombreEnvio: data?.nombreEnvio,
+            direccionEnvio: data?.direccionEnvio,
+            codigoPostalEnvio: data?.codigoPostalEnvio,
+            ciudadEnvio: data?.ciudadEnvio,
+            provinciaEnvio: data?.provinciaEnvio,
+            paisEnvio: data?.paisEnvio,
+            movilEnvio: data?.movilEnvio,
+            telefonoEnvio: data?.telefonoEnvio,
             personaContacto: "string",
             email: localStorage.getItem("email"),
             tienda: "string",
@@ -182,23 +175,17 @@ class User {
 
             .then(response => {
 
-                Swal.fire({
-                    icon: "success",
-                    title: "Enviado...",
-                    text: "Updated Successfuly",
-                }).then(resp => {
-
+                fireSwal('success', 'Enviado...', 'Updated Successfulyt').then(resp => {
+                    sessionStorage.setItem('step', 1);
                     window.location.reload();
 
                 })
 
             }).catch(error => {
 
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `Please Fill Out The Required Data And The least Characters of The input must be more than or equal 5`,
-                });
+                const errors = Object.values(error?.response?.data.errors).join('And');
+
+                fireSwal('error', 'Oops...', errors);
 
             });
 
@@ -396,6 +383,58 @@ class Editor {
 
 }
 
+class RegisterEditor {
+
+
+    constructor(alias) {
+
+        this.email = localStorage.getItem('email');
+
+        this.alias = alias;
+
+        this.url = `https://apiapn.copisterialowcost.info/register-editor?Alias=${this.alias}&Email=${localStorage.getItem('email')}`;
+    }
+
+    post() {
+
+        axios({
+
+            method: 'post',
+
+            url: this.url,
+
+            headers: {
+                'accept': 'text/plain',
+                'Content-Type': 'application/json' // Set the content type to JSON
+            },
+
+
+
+        })
+            .then(response => {
+
+                fireSwal('success', "Congratulation You're Editor Now", null).then(resp => {
+
+                    sessionStorage.setItem('step', 4);
+                    window.location.href = "/information";
+
+                })
+
+            })
+            .catch(error => {
+
+                fireSwal('warning', null, error?.response?.data?.message).then(resp => {
+
+                    sessionStorage.setItem('step', 4);
+                    window.location.href = "/information";
+
+                })
+            })
+
+    }
+
+}
+
 class FormularioVenta {
 
     constructor() {
@@ -450,11 +489,7 @@ class FormularioVenta {
 
             setIsLoaderLoading(false);
 
-            Swal.fire({
-                icon: "success",
-                title: "Enviado...",
-                text: "Apunte y temarios creados correctamente",
-            }).then(resp => {
+            fireSwal('success', 'Enviado...', 'Apunte y temarios creados correctamente').then(resp => {
 
                 sessionStorage.setItem('step', 4);
 
@@ -464,10 +499,151 @@ class FormularioVenta {
 
             return;
 
-        }).catch(error => console.log(error, 'Error'));
+        }).catch(error => {
+
+            fireSwal('error', 'Oops...', error?.response?.data?.title).then(resp => {
+
+                sessionStorage.setItem('step', 4);
+
+                window.location.href = "information";
+
+            })
+        });
 
     }
 
+
+}
+
+class Resumen {
+
+    constructor() {
+        this.email = localStorage.getItem('email');
+    }
+
+    getEditor(setState) {
+
+        axios({
+
+            method: 'get',
+
+            url: `https://apiapn.copisterialowcost.info/User/get-editor?emailUser=${this.email}`,
+
+
+        })
+            .then(response => {
+
+                setState(response.data);
+
+            })
+            .catch(error => console.log(error, 'Errorr'))
+
+    }
+
+    resumenApuntes(id, setState) {
+
+        const dataToSend = {
+            editorId: id,
+            tienda: "string",
+            culture: "string"
+        };
+
+        axios({
+
+            method: 'post',
+
+            url: `https://apiapn.copisterialowcost.info/User/get-apuntes-editor`,
+
+            headers: {
+                'accept': 'text/plain',
+                'Content-Type': 'application/json'
+            },
+
+            data: dataToSend
+
+        })
+            .then(response => {
+
+                setState(response.data);
+
+            })
+            .catch(error => console.log(error, 'Errorr'))
+
+
+    }
+
+}
+
+class Buscar {
+
+    constructor(gradoCode, state) {
+
+        this.gradoCode = gradoCode;
+
+        this.state = state;
+
+    }
+
+
+    get() {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/Apuntes/get-asignaturas?gradoCode=${this.gradoCode}`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                this.state(response.data);
+
+            })
+
+            .catch(error => null);
+
+    }
+
+    getByAsignaturaCode(code) {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/Apuntes/get-apuntes-by-asignatura?asignaturaCode=${code}`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                this.state(response.data);
+
+            })
+
+            .catch(error => null);
+
+    }
+
+    getByCursoCode(code) {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/Apuntes/get-apuntes-by-curso?cursoId=${code}`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                this.state(response.data);
+
+            })
+
+            .catch(error => null);
+
+    }
 
 }
 
@@ -482,6 +658,8 @@ export {
     FormularioVenta,
     Editor,
     Auth,
-    User
-
+    User,
+    Resumen,
+    RegisterEditor,
+    Buscar,
 }
