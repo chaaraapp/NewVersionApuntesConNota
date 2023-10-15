@@ -2,8 +2,8 @@ import { faCartShopping, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { handelClick } from './data';
 import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../../assetes/utils/utils';
 
 
 export default function SingleProduct({ item }) {
@@ -105,7 +105,7 @@ export default function SingleProduct({ item }) {
 
                     </Link>
 
-                    <button onClick={_ => handelClick(item, dispatch)} className="py-[10px] px-[12px] border border-[#ffc559] bg-white text-[#ffc559] rounded-[5px]">
+                    <button onClick={_ => addToCart(item, dispatch)} className="py-[10px] px-[12px] border border-[#ffc559] bg-white text-[#ffc559] rounded-[5px]">
 
                         <FontAwesomeIcon icon={faCartShopping} />
 

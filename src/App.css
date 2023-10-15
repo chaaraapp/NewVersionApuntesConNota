@@ -12,6 +12,7 @@
 :root {
   --primary: #48c480;
   --cartCount: '0';
+  --transition: 0.5s all ease-in-out;
 }
 
 body {
@@ -21,6 +22,10 @@ body {
 .container {
   margin: auto;
   padding: 10px;
+}
+
+.transition {
+  transition: var(--transition) !important;
 }
 
 header svg {

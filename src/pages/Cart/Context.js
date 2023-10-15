@@ -1,40 +1,29 @@
-const total = JSON.parse(localStorage.getItem('products'))?.reduce((acc, curr) => acc + curr.precioBN, 0);
+import { useSelector } from "react-redux";
+import { getTotalPrice } from "../../assetes/utils/utils";
 
-const initailState = {
-    price: total
+const useGetInitailState = () => {
+
+    const products = useSelector(store => store.cart);
+
+    const initailState = {
+        price: getTotalPrice(products)
+    }
+
+    return { initailState }
+
 }
 
 const priceReducer = (state, action) => {
 
+    const products = JSON.parse(localStorage.getItem('products'));
+
     switch (action.type) {
-
-        case "BN_PRICE":
-
-            return {
-
-                price: state.price - action.payload.oldPrice + action.payload.newPrice
-
-            };
-
-        case "PRECIO_PRICE":
-
-            return {
-
-                price: state.price - action.payload.oldPrice + action.payload.newPrice
-
-            };
-
-        case "quantity":
-
-            return {
-
-            }
 
         case "UPDATE_PRICE": // New action type to update the total price
 
             return {
 
-                price: state.price
+                price: getTotalPrice(products)
 
             };
 
@@ -45,6 +34,6 @@ const priceReducer = (state, action) => {
 };
 
 export {
-    initailState,
+    useGetInitailState,
     priceReducer
 }

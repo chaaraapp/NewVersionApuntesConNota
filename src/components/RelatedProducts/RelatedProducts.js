@@ -32,9 +32,9 @@ const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((item, index) => {
 
 
 
-export default function RelatedProducts() {
+export default function RelatedProducts(props) {
     return (
-        <section>
+        <section {...props}>
 
             <h1 className='text-[30px] text-[#002733] border-b-8 pb-3 border-b-[#48c480] mb-20'>Te puede interesar....</h1>
 

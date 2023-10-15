@@ -1,11 +1,17 @@
+import { useState } from 'react';
 import { Dropdown } from '../../../../components'
-import { handleRemoveFromCart, useDataGetter } from './data';
+import { useDataGetter, useUpdatedProduct } from './data';
+import { handleRemoveProduct } from '../../../../assetes/utils/utils';
 
+export default function Product({ defaultItem, setTotalPrice }) {
 
-export default function Product({ item, setTotalPrice }) {
+    const [item, setItem] = useState(defaultItem);
 
-    const { handleBNClick, handlePrecioCOClick, selecteCount, setSelecteCount, dispatchNewProducts, btnPrice } = useDataGetter(item, setTotalPrice);
-   
+    const { handlePriceClick, selecteCount, setSelecteCount, dispatchNewProducts, setCartState, productCount } = useDataGetter(item, setTotalPrice);
+
+    // Update Product When Size Or Price Changeing
+    const _ = useUpdatedProduct(selecteCount, item, setItem, setCartState);
+
     return (
         <div className='bg-[#f7f7f7] border rounded-[5px] p-3 flex items-center mb-3'>
 
@@ -24,8 +30,8 @@ export default function Product({ item, setTotalPrice }) {
 
                     </div>
 
-                    <button className='bg-[#b3f2d0] text-black border rounded-[5px] px-8 py-4 text-center me-3' onClick={handleBNClick}>BN</button>
-                    <button className='bg-white text-black border rounded-[5px] px-8 py-4 text-center' onClick={handlePrecioCOClick}>Color</button>
+                    <button className={`${defaultItem?.bnButton !== false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] px-8 py-4 text-center me-3`} onClick={_ => handlePriceClick(item, true)}>BN</button>
+                    <button className={`${defaultItem?.bnButton === false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] px-8 py-4 text-center`} onClick={_ => handlePriceClick(item, false)}>Color</button>
 
                 </div>
 
@@ -33,15 +39,15 @@ export default function Product({ item, setTotalPrice }) {
 
                     <div>
 
-                        <Dropdown title={'Cant: '} selectedItem={selecteCount} setSelectedItem={setSelecteCount} list={[{ nombre: "1" }, { nombre: "2" }, { nombre: "3" }]} styling={"w-[120px]"} />
+                        <Dropdown title={'Cant: '} selectedItem={selecteCount} setSelectedItem={setSelecteCount} list={productCount} styling={"w-[120px]"} />
 
-                        <button onClick={_ => handleRemoveFromCart(item, dispatchNewProducts)} className='bg-[#dbdbdb] w-[100px] p-2 border mx-3 rounded-[5px]'>Eliminar</button>
+                        <button onClick={_ => handleRemoveProduct(item, dispatchNewProducts)} className='bg-[#dbdbdb] w-[100px] p-2 border mx-3 rounded-[5px]'>Eliminar</button>
 
                     </div>
 
                     <h1 className='lg:text-[40px] font-medium '>
 
-                        {btnPrice ? item?.precioBN : item?.precioCO} €
+                        {defaultItem?.bnButton !== false ? item?.newPrecioBN || item?.precioBN : item?.newPrecioCO || defaultItem?.precioCO} €
 
                     </h1>
 
@@ -52,3 +58,5 @@ export default function Product({ item, setTotalPrice }) {
         </div>
     )
 }
+
+

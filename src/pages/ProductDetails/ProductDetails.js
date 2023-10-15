@@ -1,9 +1,16 @@
 import Button from '@mui/material/Button';
 import { RelatedProducts } from '../../components';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../assetes/utils/utils';
+import { useState } from 'react';
 
 export default function ProductDetails() {
 
     const item = JSON.parse(localStorage.getItem('active-proudct'));
+
+    const [isBnPrice, setIsBnPrice] = useState(false);
+
+    const dispatch = useDispatch();
 
     return (
         <div>
@@ -62,20 +69,28 @@ export default function ProductDetails() {
 
                     </p>
 
+                    <p className='mb-3'>
+
+                        <span className='text-[#a3a3a3]'>N<sup>o</sup> pags:</span>
+
+                        <text>126</text>
+
+                    </p>
+
                     <p className='mb-5'>
 
-                        <span className='text-[#a3a3a3]'>N<sup>o</sup> pags::</span>
-                        <text> 126</text>
+                        <span className='text-[#a3a3a3]'>precio: </span>
+                        <text> {isBnPrice ? item?.precioBN : item?.precioCO} €</text>
 
                     </p>
 
                     <div className='flex items-center'>
 
-                        <button className='bg-[#eaeaea] text-black border rounded-[5px] px-8 py-4 text-center me-3'>BN</button>
+                        <button onClick={_ => setIsBnPrice(true)} className={` text-black border rounded-[5px] transition px-8 py-4 text-center me-3 ${isBnPrice ? "bg-[#eaeaea]" : ""}`}>BN</button>
 
-                        <button className='bg-white text-black border rounded-[5px] px-8 py-4 me-3 text-center'>Color</button>
+                        <button onClick={_ => setIsBnPrice(false)} className={`${isBnPrice ? "" : "bg-[#eaeaea]"} transition text-black border rounded-[5px] px-8 py-4 me-3 text-center`}>Color</button>
 
-                        <Button className='!bg-[#ffc559] !text-[#013945] !text-[20px] !p-2 !px-5 sm:!px-20 !font-bold' style={{ textTransform: "initial" }}>Anadir al carrito</Button>
+                        <Button onClick={_ => addToCart(item, dispatch)} className='!bg-[#ffc559] !text-[#013945] !text-[20px] !p-2 !px-5 sm:!px-20 !font-bold' style={{ textTransform: "initial" }}>Anadir al carrito</Button>
 
                     </div>
 

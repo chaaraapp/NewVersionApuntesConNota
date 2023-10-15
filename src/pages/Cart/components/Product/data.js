@@ -1,93 +1,79 @@
-import Swal from "sweetalert2";
-import { setCart } from "../../../../store/reduces/cart";
+import { updateCart } from "../../../../store/reduces/cart";
 import { useEffect, useReducer, useState } from "react";
 import { useDispatch } from "react-redux";
-import { initailState, priceReducer } from "../../Context";
-
-const handleRemoveFromCart = (item, dispatchNewProducts) => {
-
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-
-            const products = JSON.parse(localStorage.getItem('products'));
-
-            // Filter Product By ID 
-            const newItems = products?.filter(product => product.id !== item.id);
-
-            dispatchNewProducts(setCart(newItems));
-
-            localStorage.setItem('products', JSON.stringify(newItems));
-
-            Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            ).then(response => window.location.reload());
-        }
-    })
-
-}
+import { useGetInitailState, priceReducer } from "../../Context";
 
 const useDataGetter = (item, setTotalPrice) => {
 
-    const [state, dispatch] = useReducer(priceReducer, initailState);
+    const { initailState } = useGetInitailState();
+
+    const [productCount] = useState([{ nombre: "1" }, { nombre: "2" }, { nombre: "3" }]);
+
+    const [cartState, setCartState] = useReducer(priceReducer, initailState);
 
     const dispatchNewProducts = useDispatch();
 
-    const [selecteCount, setSelecteCount] = useState({ nombre: 1 });
+    const [selecteCount, setSelecteCount] = useState({ nombre: item?.size || 1, initail: true });
 
-    const [btnPrice, setBnPrice] = useState(true);
+    const handlePriceClick = (item, state) => {
 
-    const handleBNClick = () => {
+        const newItem = { ...item, bnButton: state };
 
-        setBnPrice(true);
+        dispatchNewProducts(updateCart(newItem));
 
-        if (!btnPrice) {
-
-            dispatch({
-
-                type: "BN_PRICE",
-
-                payload: { newPrice: item?.precioBN, oldPrice: item?.precioCO }
-            });
-        }
+        setCartState({ type: "UPDATE_PRICE" });
     };
 
-    const handlePrecioCOClick = () => {
-
-        setBnPrice(false);
-
-
-        if (btnPrice) {
-
-            dispatch({
-
-                type: "PRECIO_PRICE",
-                payload: { newPrice: item?.precioCO, oldPrice: item?.precioBN }
-
-            });
-        }
-    };
 
     useEffect(() => {
 
-        setTotalPrice(state.price);
+        setTotalPrice(cartState.price);
 
-    }, [state.price]);
+    }, [cartState.price]);
 
-    return { handleBNClick, handlePrecioCOClick, selecteCount, setSelecteCount, dispatchNewProducts, btnPrice }
+    return { handlePriceClick, selecteCount, setSelecteCount, dispatchNewProducts, setCartState, productCount }
+
+}
+
+const useUpdatedProduct = (selecteCount, item, setItem, setCartState) => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+
+        const updatedItem = item => {
+
+            const newItem = { ...item, size: selecteCount.nombre };
+
+            // update each Price At Item
+            newItem.newPrecioBN = Number(newItem.precioBN) * Number(newItem.size);
+            newItem.newPrecioCO = Number(newItem.precioCO) * Number(newItem.size);
+
+            // Update State
+            setItem(newItem);
+
+            return newItem
+        }
+
+        if (!selecteCount?.initail) {
+
+            dispatch(updateCart(updatedItem(item)));
+
+        }
+
+    }, [selecteCount]);
+
+    useEffect(() => {
+
+        setCartState({ type: "UPDATE_PRICE", });
+
+    }, [item?.size]);
+
+    return {};
 
 }
 
 export {
-    handleRemoveFromCart,
-    useDataGetter
+    useDataGetter,
+    useUpdatedProduct
 }

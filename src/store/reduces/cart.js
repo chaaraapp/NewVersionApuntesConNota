@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { sort_by_id } from "../../assetes/utils/utils";
 
 const cart = createSlice({
 
@@ -9,8 +10,25 @@ const cart = createSlice({
     reducers: {
 
         setCart: (state, action) => {
-            localStorage.setItem('products', JSON.stringify(action.payload));
+
+            const products = action.payload.sort(sort_by_id());
+
+            localStorage.setItem('products', JSON.stringify(products));
+
             return state = action.payload;
+
+        },
+
+        updateCart: (state, action) => {
+
+            const uniqeItems = state.filter(item => item.id !== action.payload.id);
+
+            const updatedItem = [...uniqeItems, action.payload].sort(sort_by_id());
+
+            // Update Localstorage
+            localStorage.setItem('products', JSON.stringify(updatedItem));
+            
+            return state = updatedItem;
 
         }
     }
@@ -19,4 +37,4 @@ const cart = createSlice({
 export default cart.reducer;
 
 
-export const { setCart } = cart.actions;
+export const { setCart, updateCart } = cart.actions;

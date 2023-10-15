@@ -26,12 +26,12 @@ export default function Hero({ buscars, setBuscars }) {
 
                 <Autocomplete disablePortal className='mb-2 bg-white' value={facultadValue} onChange={(e, value) => { setFacultadValue(value); setFormData((prevData) => ({ ...prevData, facultad: value?.codigo })); }}
 
-                    noOptionsText='Facultad Farmacia' options={Array.isArray(facultadesList) ? facultadesList : []} getOptionLabel={(option) => option.nombre} renderInput={(params) => (<TextField {...params} label='Facultad Farmacia:' />)} />
+                    noOptionsText='Facultad Farmacia' options={Array.isArray(facultadesList) ? facultadesList : []} getOptionLabel={(option) => option.nombre} renderInput={(params) => (<TextField {...params} label='Facultad:' />)} />
 
                 <Autocomplete disablePortal className='mb-2 bg-white'
 
                     value={gradoValue} options={Array.isArray(gradoList) ? gradoList : []} onChange={(e, value) => { setGradoValue(value); setFormData((prevData) => ({ ...prevData, grado: value?.codigo })); }}
-                    noOptionsText='Grado en Farmacia' getOptionLabel={(option) => option.nombre} renderInput={(params) => (<TextField  {...params} label='Grado en Farmacia:' />)} />
+                    noOptionsText='Grado en Farmacia' getOptionLabel={(option) => option.nombre} renderInput={(params) => (<TextField  {...params} label='Grado:' />)} />
 
                 <div className='flex items-center mb-3'>
 
