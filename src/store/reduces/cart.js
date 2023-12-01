@@ -21,7 +21,7 @@ const cart = createSlice({
 
         updateCart: (state, action) => {
 
-            const uniqeItems = state.filter(item => item.id !== action.payload.id);
+            const uniqeItems = state.filter(item => item.codigo !== action.payload.codigo);
 
             const updatedItem = [...uniqeItems, action.payload].sort(sort_by_id());
 

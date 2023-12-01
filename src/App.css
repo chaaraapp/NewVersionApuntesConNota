@@ -12,7 +12,11 @@
 :root {
   --primary: #48c480;
   --cartCount: '0';
-  --transition: 0.5s all ease-in-out;
+  --transition: 0.3s all ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -34,6 +38,9 @@ header svg {
   color: #6c757d;
 }
 
+.swiper-wrapper {
+  transition-timing-function: linear ease-in-out;
+}
 
 .form-control {
   display: block;
@@ -50,6 +57,7 @@ header svg {
   border-radius: 0.25rem;
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
+
 
 .form-control:focus {
   color: #495057;
@@ -144,6 +152,26 @@ li label:hover {
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #10c47f !important;
-  font-weight: bolder;
+  width: 0px !important;
+  height: 0px !important;
+  border: 30px solid;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left: 30px solid #bebebe;
+  margin-top: -70px !important;
+  left: -30px !important;
+}
+.swiper-button-prev {
+  border-left-color: transparent !important;
+  border-right: 30px solid #bebebe;
+}
+.swiper-button-next {
+  left: initial !important;
+  right: -30px !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  display: none;
 }

@@ -15,6 +15,11 @@ const Cart = lazy(() => import('../pages/Cart'));
 const BuscarApuntes = lazy(() => import('../pages/BuscarApuntes'));
 const Timer = lazy(() => import('../pages/Timer'));
 const Information = lazy(() => import('../pages/Information'));
+const Avisolegal = lazy(() => import('../pages/Avisolegal'));
+const Privacidad = lazy(() => import('../pages/Privacidad'));
+const Condicionesgenerales = lazy(() => import('../pages/Condicionesgenerales'));
+const Politicacookies = lazy(() => import('../pages/Politicacookies'));
+const Formaspago = lazy(() => import('../pages/Formaspago'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 const ProductDetails = lazy(() => import('../pages/ProductDetails'));
 
@@ -98,7 +103,14 @@ export default function routes() {
 
                 } />
 
+                <Route path="/avisolegal" element={<Avisolegal />} />
+                <Route path="/privacidad" element={<Privacidad />} />
+                <Route path="/condicionesgenerales" element={<Condicionesgenerales />} />
+                <Route path="/politicacookies" element={<Politicacookies />} />
+                <Route path="/formaspago" element={<Formaspago />} />
+
                 <Route path="*" element={<NotFound />} />
+
                 {/* End Of Route configuration */}
 
             </Routes>
