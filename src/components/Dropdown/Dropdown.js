@@ -7,7 +7,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Dropdown({ styling, selectedItem, setSelectedItem, list, title }) {
+export default function Dropdown({ styling, selectedItem, setSelectedItem, list, title, setEmptyState, emptyStateValue }) {
 
     return (
 
@@ -38,7 +38,10 @@ export default function Dropdown({ styling, selectedItem, setSelectedItem, list,
 
                                         {({ active }) => (
 
-                                            <p onClick={_ => setSelectedItem(item)} className={classNames(active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm')}  >
+                                            <p onClick={_ => {
+                                                setSelectedItem(item);
+                                                setEmptyState && setEmptyState({ nombre: emptyStateValue })
+                                            }} className={classNames(active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm')}  >
                                                 {item?.nombre}
                                             </p>
 

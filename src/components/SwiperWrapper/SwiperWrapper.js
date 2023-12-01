@@ -7,9 +7,12 @@ import { Swiper } from 'swiper/react';
 // That's will Render The Container Of The Swiper Slide Elements
 export default function SwiperWrapper(props) {
 
-    const { items, slidesPerViewCount, autoplayDelay, isLooped, includePagination, includeNavigation } = props;
+    const { items, slidesPerViewCount, setActiveIndex, smCustomView, classNames, autoplayDelay, isLooped, includePagination, includeNavigation } = props;
 
     // ### slidesPerViewCount Will be an array of numbers that's display the count of cards in screen
+    const handleSlideChange = (swiper) => {
+        return setActiveIndex && setActiveIndex(swiper.activeIndex);
+    };
 
     return (
         <Swiper
@@ -32,6 +35,11 @@ export default function SwiperWrapper(props) {
             modules={[Autoplay, Pagination, Navigation]}
 
             breakpoints={{
+
+                // when window width is >= 640px
+                350: {
+                    slidesPerView: smCustomView || 1.1,
+                },
 
                 // when window width is >= 640px
                 550: {
@@ -58,8 +66,9 @@ export default function SwiperWrapper(props) {
                 }
 
             }}
-
-            className="mySwiper" >
+            speed={3000}
+            onSlideChange={handleSlideChange}
+            className={`mySwiper ${classNames}`} >
 
             {/* That's Will Render Items To UI */}
             {items}

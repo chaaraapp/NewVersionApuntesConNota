@@ -8,3 +8,6 @@ export { default as Dropdown } from './Dropdown';
 export { default as Accordion } from './Accordion';
 export { default as Loader } from './Loader';
 export { default as Auth } from './Auth';
+export { default as Spiners } from './Spiners';
+export { default as Popup } from './Popup';
+export { default as ScrollReset } from './ScrollReset';

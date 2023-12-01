@@ -1,6 +1,6 @@
 import { faBars, faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { logout } from '../../assetes/utils/utils';
 import { useSelector } from 'react-redux';
@@ -56,32 +56,46 @@ export default function Header() {
 
                         <ul className='options-menu'>
 
-                            <li>  <a href={'/information?id=1'}>  Mi cuenta  </a>   </li>
-
-                            <li>  <a href={'/information?id=3'}> Datos de facturación </a></li>
-
-                            <li>  <a href={'/information?id=3'}>  Datos de envío  </a>  </li>
-
-                            <li>  <a href={'/information?id=2'}> Mis pedidos  </a> </li>
-
-                            <li>  <a href={'/information?id=4'} >  Librería editor   </a>  </li>
-
-
                             {!isLoged ? (
 
-                                <Link to={'/login'}>
+                                <Fragment>
 
-                                    <li> <label className='menu-item'>Iniciar Sesion</label>   </li>
+                                    <Link to={'/login'}>
 
-                                </Link>
+                                        <li> <label className='menu-item'>Iniciar Sesion</label>   </li>
+
+                                    </Link>
+
+
+                                </Fragment>
 
 
                             ) : (
-                                <li onClick={logout}>
 
-                                    <label className='menu-item'>  Cerrar sesión  </label>
+                                <Fragment>
 
-                                </li>
+                                    <li>  <a href={'/information?id=1'}>  Mi cuenta  </a>   </li>
+
+                                    <li>  <a href={'/formulario-venta'}> Vender mis apuntes </a>   </li>
+
+                                    <li>  <a href={'/buscar-apuntes'}> Buscar apuntes</a>   </li>
+
+                                    <li>  <a href={'/information?id=3'}> Dirección de envío </a></li>
+
+                                    <li>  <a href={'/information?id=2'}> Mis pedidos  </a> </li>
+
+                                    <li>  <a href={'/information?id=4'} > Mis apuntes subidos   </a>  </li>
+
+                                    <li>  <a href={'/information?id=5'}> Mi saldo   </a>  </li>
+
+                                    <li onClick={logout}>
+
+                                        <label className='menu-item'>  Cerrar sesión  </label>
+
+                                    </li>
+
+                                </Fragment>
+
                             )}
                         </ul>
 

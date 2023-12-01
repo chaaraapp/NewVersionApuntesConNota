@@ -1,5 +1,4 @@
 import axios from "axios";
-import Swal from "sweetalert2";
 import { fireSwal } from "../assetes/utils/utils";
 
 class Auth {
@@ -40,14 +39,7 @@ class Auth {
 
     postRegister(data) {
 
-        const { nombre, apellidos, email, password, direccion = 'unknow' } = data;
-
-        const params = new URLSearchParams({
-            Nombre: `${nombre} ${apellidos}`,
-            Email: email,
-            Pass: password,
-            Direccion: direccion,
-        });
+        const params = new URLSearchParams(data);
 
         axios({
 
@@ -59,7 +51,7 @@ class Auth {
             .then(response => {
 
                 localStorage.setItem('token', response.data.token);
-                localStorage.setItem('email', email);
+                localStorage.setItem('email', data?.Email);
 
                 window.location.href = "/";
 
@@ -72,7 +64,7 @@ class Auth {
 
     }
 
-    postLoginGoogle(tokenGoogle) {
+    postLoginGoogle(tokenGoogle, email) {
 
         axios({
 
@@ -83,7 +75,10 @@ class Auth {
         })
             .then(response => {
 
-                console.log(response, 'response');
+                localStorage.setItem('token', response.data);
+                localStorage.setItem('email', email);
+
+                window.location.href = "/";
 
             })
             .catch(error => {
@@ -175,11 +170,7 @@ class User {
 
             .then(response => {
 
-                fireSwal('success', 'Enviado...', 'Updated Successfulyt').then(resp => {
-                    sessionStorage.setItem('step', 1);
-                    window.location.reload();
-
-                })
+                fireSwal('success', 'Enviado...', 'Se ha guardado tus datos correctamente.')
 
             }).catch(error => {
 
@@ -310,11 +301,11 @@ class Asignaturas {
         })
 
             .then(response => {
-
+                console.log('Response', response);
                 state(response.data)
 
             })
-            .catch(error => error);
+            .catch(error => console.log(error, 'Error'));
     }
 }
 
@@ -491,21 +482,17 @@ class FormularioVenta {
 
             fireSwal('success', 'Enviado...', 'Apunte y temarios creados correctamente').then(resp => {
 
-                sessionStorage.setItem('step', 4);
-
-                window.location.href = "information";
+                window.location.href = "information?id=4";
 
             })
 
             return;
 
         }).catch(error => {
-
+            console.log(error)
             fireSwal('error', 'Oops...', error?.response?.data?.title).then(resp => {
 
-                sessionStorage.setItem('step', 4);
-
-                window.location.href = "information";
+                // window.location.href = "information?id=4";
 
             })
         });
@@ -576,16 +563,20 @@ class Resumen {
 
 class Buscar {
 
-    constructor(gradoCode, state) {
+    constructor(gradoCode, state, setLoader) {
 
         this.gradoCode = gradoCode;
 
         this.state = state;
 
+        this.setLoader = setLoader;
+
     }
 
 
     get() {
+
+        this.setLoader(true);
 
         axios({
 
@@ -597,15 +588,22 @@ class Buscar {
 
             .then(response => {
 
+                this.setLoader(false);
+
                 this.state(response.data);
+
+                window.scrollTo({
+                    top: 600,
+                    behavior: "smooth"
+                })
 
             })
 
-            .catch(error => null);
+            .catch(error => this.setLoader(false));
 
     }
 
-    getByAsignaturaCode(code) {
+    getByAsignaturaCode(code, firePopup) {
 
         axios({
 
@@ -618,6 +616,16 @@ class Buscar {
             .then(response => {
 
                 this.state(response.data);
+                
+                if (!response.data?.length) {
+
+                    setTimeout(() => {
+
+                        firePopup();
+
+                    }, 800);
+
+                }
 
             })
 
@@ -647,6 +655,139 @@ class Buscar {
 
 }
 
+class RelatedProducts {
+
+    constructor(gradoCode, cursoId, state) {
+
+        this.gradoCode = gradoCode;
+
+        this.cursoId = cursoId;
+
+        this.state = state;
+
+    }
+
+
+    get() {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/Apuntes/get-apuntes-recomendados?cursoId=${this.cursoId}&gradoCode=${this.gradoCode}`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                this.state(response.data);
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+
+
+}
+
+class ProductPDF {
+
+    get(state, codigo) {
+        // c69dd22503cf4935bb81737e3924774b
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/File/get-file-preview?codeApunte=${codigo}`,
+
+            method: "get",
+
+            responseType: 'arraybuffer',
+
+        })
+
+            .then(response => {
+
+                state(response.data);
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+
+}
+
+class PayMethodWays {
+
+    get(state) {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/PayMethod/get-metodos-pago`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                return state(response.data);
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+
+}
+
+class DeliveryWays {
+
+    get(state) {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/Delivery/get-formas-entrega`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                return state(response.data);
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+
+}
+
+class DeliveryGetPuntes {
+
+    get(state) {
+
+        axios({
+
+            url: `https://apiapn.copisterialowcost.info/Delivery/get-puntos-recogida`,
+
+            method: "get"
+
+        })
+
+            .then(response => {
+
+                return state(response.data[0]);
+
+            })
+
+            .catch(error => console.log(error));
+
+    }
+
+}
 
 export {
 
@@ -662,4 +803,10 @@ export {
     Resumen,
     RegisterEditor,
     Buscar,
+    RelatedProducts,
+    ProductPDF,
+    PayMethodWays,
+    DeliveryWays,
+    DeliveryGetPuntes
+
 }

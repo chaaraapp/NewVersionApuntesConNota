@@ -25,16 +25,24 @@ export default function EnviarForm({ isHasTitle }) {
         state(value)
     };
 
-    const handleFileChange = ({ target: { value, name, files } }) => {
+    const handleFileChange = ({ target: { value, name, files, ...prop } }) => {
+        name = name.split(',');
+        console.log(name)
+        if (files[0]?.type !== "application/pdf") {
 
+            return fireSwal('error', 'Oops...', 'Debe adjuntar el archivo en formato pdf');
+
+        }
         if (files[0].size > MAX_FILE_SIZE_BYTES) {
 
             return fireSwal('error', 'Oops...', 'El tamaño del archivo tiene que ser menos de 100 MB.');
 
         } else {
 
-            setFormData((prevData) => ({ ...prevData, [name]: files }));
-            setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+            fireSwal('success', null, name[1]);
+
+            setFormData((prevData) => ({ ...prevData, [name[0]]: files }));
+            setErrors((prevErrors) => ({ ...prevErrors, [name[0]]: "" }));
 
         }
 
@@ -57,17 +65,15 @@ export default function EnviarForm({ isHasTitle }) {
 
                 <div className='grid grid-cols-12 gap-5'>
 
+                    <FormAutocomplete label={'Universidad:'} value={UniversidadValue} span={'col-span-12 sm:col-span-6'} list={universidadList} setValue={setUniversidadValue} inputName={'universidad'} error={errors.universidad} handleInputChange={handleInputChange} />
 
+                    <FormAutocomplete label={'Facultad:'} value={Facultad} span={'col-span-12 sm:col-span-6'} list={facultadList} setValue={setFacultad} inputName={'facultad'} error={errors.facultad} handleInputChange={handleInputChange} />
 
-                    <FormAutocomplete label={'Universidad:'} value={UniversidadValue} span={6} list={universidadList} setValue={setUniversidadValue} inputName={'universidad'} error={errors.universidad} handleInputChange={handleInputChange} />
+                    <FormAutocomplete label={'Grado:'} value={Grado} span={'col-span-12 sm:col-span-6'} list={gradoList} setValue={setGrado} inputName={'grado'} error={errors.grado} handleInputChange={handleInputChange} />
 
-                    <FormAutocomplete label={'Facultad:'} value={Facultad} span={6} list={facultadList} setValue={setFacultad} inputName={'facultad'} error={errors.facultad} handleInputChange={handleInputChange} />
+                    <FormAutocomplete label={'Asignatura:'} value={Asignatura} span={'col-span-12 sm:col-span-6'} list={asignaturasList} setValue={setAsignatura} inputName={'asignatura'} error={errors.asignatura} handleInputChange={handleInputChange} />
 
-                    <FormAutocomplete label={'Grado:'} value={Grado} span={6} list={gradoList} setValue={setGrado} inputName={'grado'} error={errors.grado} handleInputChange={handleInputChange} />
-
-                    <FormAutocomplete label={'Asignatura:'} value={Asignatura} span={6} list={asignaturasList} setValue={setAsignatura} inputName={'asignatura'} error={errors.asignatura} handleInputChange={handleInputChange} />
-
-                    <FormAutocomplete label={'Curso:'} value={Curso} span={4} list={cursoList} setValue={setCurso} inputName={'curso'} error={errors.curso} handleInputChange={handleInputChange} />
+                    <FormAutocomplete label={'Curso:'} value={Curso} span={'col-span-12 lg:col-span-4'} list={cursoList} setValue={setCurso} inputName={'curso'} error={errors.curso} handleInputChange={handleInputChange} />
 
 
                     <div className='col-span-12 lg:col-span-2'>
@@ -78,7 +84,7 @@ export default function EnviarForm({ isHasTitle }) {
 
                     <div className='col-span-12 lg:col-span-2'>
 
-                        <Autocomplete disablePortal freeSolo value={Ano} options={Array.isArray(anoList) ? anoList : []} getOptionLabel={(option) => option.nombre} onChange={(e, value) => handleInputChange(value, 'ano', setAno)} renderInput={(params) => (<TextField error={errors?.ano?.length ? true : false}   {...params} label='Ano:' />)} />
+                        <Autocomplete disablePortal freeSolo value={Ano} options={Array.isArray(anoList) ? anoList : []} getOptionLabel={(option) => option.nombre} onChange={(e, value) => handleInputChange(value, 'ano', setAno)} renderInput={(params) => (<TextField error={errors?.ano?.length ? true : false}   {...params} label='Año:' />)} />
 
                     </div>
 
@@ -108,7 +114,7 @@ export default function EnviarForm({ isHasTitle }) {
 
                                     Subir apunte
 
-                                    <VisuallyHiddenInput accept='.pdf, .doc, .docx' type='file' name='archivoApunte' onChange={handleFileChange} />
+                                    <VisuallyHiddenInput accept='.pdf, .doc, .docx' type='file' name={['archivoApunte', 'Apunte subido']} onChange={handleFileChange} />
 
                                 </Button>
 
@@ -135,17 +141,23 @@ export default function EnviarForm({ isHasTitle }) {
 
                     <div className='col-span-12  lg:col-span-6'>
 
-                        <div className='flex justify-between items-center p-2 px-3 bg-[#e4e3e4] rounded-[5px]' >
+                        <div className=''>
 
-                            <div className='text-[14px]'> {SubirJustificante?.name?.slice(0, 15) || "Justificante de nota"}....   </div>
+                            <div className='mb-5 flex justify-between items-center p-2 px-3 bg-[#e4e3e4] rounded-[5px]' >
 
-                            <Button component='label' style={{ background: "#48c480", textTransform: "initial" }} variant='contained' startIcon={<CloudUploadIcon />}   >
+                                <div className='text-[14px]'> {SubirJustificante?.name?.slice(0, 15) || "Justificante de nota"}....   </div>
 
-                                Subir justificante
+                                <Button component='label' style={{ background: "#48c480", textTransform: "initial" }} variant='contained' startIcon={<CloudUploadIcon />}   >
 
-                                <VisuallyHiddenInput type='file' accept='.pdf, .doc, .docx' name='archivoJustificante' onChange={handleFileChange} />
+                                    Subir justificante
 
-                            </Button>
+                                    <VisuallyHiddenInput type='file' accept='.pdf, .doc, .docx' name={['archivoJustificante', 'Justificante subido']} data-checked="test" onChange={handleFileChange} />
+
+                                </Button>
+
+                            </div>
+
+                            <p>*Necesitamos el justificante de notas para poder comprobar que sacaste un 7 o más en la asignatura que estás subiendo.</p>
 
                         </div>
 
