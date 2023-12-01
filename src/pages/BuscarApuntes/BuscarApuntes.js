@@ -2,11 +2,10 @@ import { useState } from "react";
 import { Hero } from "./components";
 import { renderBusers } from "./data";
 
-
-
 export default function BuscarApuntes() {
 
     const [buscars, setBuscars] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     return (
 
@@ -18,7 +17,7 @@ export default function BuscarApuntes() {
 
                 <div className='container'>
 
-                    <div className={`${buscars?.length ? "grid grid-cols-12 gap-5" : ""}`}> {renderBusers(buscars)} </div>
+                    <div> {renderBusers(buscars, activeIndex, setActiveIndex)} </div>
 
                 </div>
 

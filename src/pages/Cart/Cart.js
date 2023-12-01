@@ -29,9 +29,9 @@ export default function Cart() {
 
             <div className='container grid grid-cols-12 gap-5'>
 
-                <div className='col-span-6'> {renderProducts(products, setTotalPrice)} </div>
+                <div className='col-span-12 xl:col-span-6'> {renderProducts(products, setTotalPrice)} </div>
 
-                <div className='col-span-6 border-2 rounded-[5px]'>
+                <div className='col-span-12 xl:col-span-6 border-2 rounded-[5px]'>
 
                     <CartActions products={products} totalPrice={totalPrice} />
 
@@ -42,6 +42,6 @@ export default function Cart() {
             </div>
 
         </div>
-        
+
     )
 }

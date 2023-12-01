@@ -19,9 +19,9 @@ export default function About() {
 
                         <h1 className='font-bold mb-[10px] text-[#004554] text-[20px] sm:text-[40px]'>Los mejores apuntes</h1>
 
-                        <p className="text-[15px] sm:text-[18px] text-[#004554] font-medium">Apuntes elaborados por estudiantes que superaron la asignatura con</p>
+                        <span className="text-[15px] sm:text-[20px] text-[#004554] font-medium">Apuntes elaborados por estudiantes que superaron la asignatura con</span>
 
-                        <h5 className="m-0 font-bold text-[#004554] text-[14px] !font-sans">una nota mínima de 7.</h5>
+                        <span className="m-0 font-bold text-[#004554] text-[20px] !font-sans"> una nota mínima de 7.</span>
 
                     </div>
 
@@ -35,15 +35,15 @@ export default function About() {
 
                         <h1 className='font-bold mb-[10px] text-[#004554] text-[20px] sm:text-[40px]'>Acabado profesional</h1>
 
-                        <p className="text-[15px] sm:text-[18px] text-[#004554] font-medium">
+                        <p className="text-[20px] sm:text-[20px]  text-[#004554] font-medium">
 
                             <span className="fw-bolder">Apuntes impresos </span>
 
                             con la mejor calidad, escritos a ordenador,
 
-                            <span className="fw-bolder"> sin publicidad </span>
+                            <span className="m-0 font-bold text-[#004554] text-[20px] !font-sans"> sin publicidad </span>
 
-                            y revisados por  nuestro equipo.
+                            <span> y revisados por  nuestro equipo.</span>
 
                         </p>
 
@@ -59,15 +59,15 @@ export default function About() {
 
                         <h1 className='font-bold mb-[10px] text-[#004554] text-[20px] sm:text-[40px]'>Recógelo o recíbelo</h1>
 
-                        <p className="text-[15px] sm:text-[18px] text-[#004554] font-medium">
+                        <p className="text-[15px] sm:text-[20px] text-[#004554] font-medium">
 
                             Puedes recibir tus apuntes
 
-                            <span className="fw-bolder"> a domicilio </span>
+                            <span className="m-0 font-bold text-[#004554] text-[20px] !font-sans"> a domicilio </span>
 
                             o bien recogerlos en uno de nuestros
 
-                            <span className="fw-bolder"> puntos de recogida.</span>
+                            <span className="m-0 font-bold text-[#004554] text-[20px] !font-sans"> puntos de recogida.</span>
 
                         </p>
 

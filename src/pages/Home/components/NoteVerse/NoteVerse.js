@@ -25,7 +25,7 @@ const NoteVerse = () => {
 
                     <p className='font-medium mb-4 px-3 text-[20px]'> Comprobamos el expediente académico de nuestros editores para garantizar la máxima calidad de nuestros apuntes.</p>
 
-                    <Link to={'/timer'}>
+                    <Link to={'/buscar-apuntes'}>
 
                         <Button variant="contained" className='!p-2 !px-5 !font-bold !text-[20px] !bg-[#ffc559] !text-[#212529]' style={{ textTransform: "initial" }}>Comprar apuntes</Button>
 

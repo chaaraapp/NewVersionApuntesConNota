@@ -4,13 +4,15 @@ import { Auth } from "../../apis/apis";
 export const useHandleSubmit = () => {
 
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        nombre: "",
-        apellidos: ""
+        Nombre: "",
+        Email: "",
+        Pass: "",
+        Direccion: "",
+        Movil: ""
     });
 
     const handelSubmit = e => {
+        
         e.preventDefault();
 
         const auth = new Auth('https://apiapn.copisterialowcost.info/register');

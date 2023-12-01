@@ -8,72 +8,92 @@ import { addToCart } from '../../../../assetes/utils/utils';
 
 export default function SingleProduct({ item }) {
 
-    const [btnPrice, setBnPrice] = useState(false);
+    const [btnPrice, setBnPrice] = useState(true);
 
     const dispatch = useDispatch();
 
+    const relatedData = JSON.parse(localStorage.getItem('related'));
+
+    const handleEyeClick = () => {
+
+        localStorage.setItem('active-proudct', JSON.stringify(item));
+
+        const updateRelatedData = { ...relatedData, curso: item?.cursoId };
+
+        // Update Localstorage
+        localStorage.setItem('related', JSON.stringify(updateRelatedData));
+
+    }
 
     return (
-        <div className='col-span-3 mb-[50px] rounded-[5px] shadow p-3 py-4'>
+        <div className='col-span-4 mb-[50px] rounded-[5px] shadow-lg p-3 py-4 transition hover:scale-[1.1] hover:bg-[#11ca7e45]'>
 
-            <div className='product-head mb-2 flex justify-between'>
+            <Link to={`/buscar-apuntes/product?id=${item?.codigo}`} onClick={handleEyeClick}>
 
-                <div>
+                <div className='product-head mb-2 flex justify-between'>
 
-                    <p className="px-[20px] py-[5px] bg-[#004554] rounded-[5px] text-white font-bold mb-[10px] text-center">{item?.curso}</p>
+                    <div>
 
-                    <p className="px-[20px] py-[5px] bg-[#48c480] rounded-[5px] text-white font-bold mb-[10px] text-center">{item?.abreviaturaUniversidad}L</p>
+                        <p className="px-[20px] py-[5px] bg-[#004554] rounded-[5px] text-white text-[13px] mb-[10px] text-center">{item?.curso}</p>
+
+                        <p className="px-[20px] py-[5px] bg-[#48c480] rounded-[5px] text-white text-[13px] mb-[10px] text-center">{item?.abreviaturaUniversidad}L</p>
+
+                    </div>
+
+                    <img src={require('../../../../assetes/images/buscar apuntes - cuaderno verde.png')} className=" w-[100px] lg:w-[120px] mx-[20px]" alt='' />
 
                 </div>
 
-                <img src={require('../../../../assetes/images/buscar apuntes - cuaderno verde.png')} className=" w-[150px] mx-[20px]" alt='' />
+                <div className='mb-4 overflow-hidden'>
 
-            </div>
+                    <h2 className='font-medium mb-1 !text-[#b9b8bc] whitespace-nowrap !text-[16px]'>{item?.grado}</h2>
 
-            <div className='mb-4'>
+                    <h3 className='font-medium mb-1 !text-[16px] whitespace-nowrap overflow-hidden'>
+                        {item?.asignatura?.slice(0, 30)}
+                        {item?.asignatura?.length > 30 ? "..." : ""}
+                    </h3>
 
-                <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>{item?.grado}</h2>
+                </div>
 
-                <h3 className='font-medium mb-1 !text-[16px]'>{item?.asignatura}</h3>
+                <div>
 
-            </div>
+                    <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>  Profesor:  </h2>
 
-            <div className='mb-4'>
+                    <h3 className='font-medium mb-1 !text-[16px]'> {item?.profesor}</h3>
 
-                <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>  Profesor:  </h2>
+                </div>
 
-                <h3 className='font-medium mb-1 !text-[16px]'> {item?.profesor}</h3>
+                <div className='mb-4'>
 
-            </div>
+                    <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>
 
-            <div className='mb-4'>
+                        Editor:  <span className='!text-black'>{item?.editor}</span>
 
-                <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>
+                    </h2>
 
-                    Editor:  <span className='!text-black'>{item?.editor}</span>
+                    <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>
 
-                </h2>
+                        Nota: <span className='!text-black'>{item?.nota}</span>
 
-                <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>
+                    </h2>
 
-                    Nota: <span className='!text-black'>{item?.nota}</span>
+                    <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>
 
-                </h2>
+                        N<sup>o</sup> pags:{" "}
+                        <span className='!text-black'>{item?.paginas}</span>
 
-                <h2 className='font-medium mb-1 !text-[#b9b8bc] !text-[16px]'>
+                    </h2>
 
-                    N<sup>o</sup> pags:{" "}
-                    <span className='!text-black'>126</span>
+                </div>
 
-                </h2>
 
-            </div>
+            </Link>
 
             <div className='product-btns flex items-center justify-center'>
 
-                <button className="me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px]" onClick={(_) => setBnPrice(true)}>BN</button>
+                <button className={`me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px] ${btnPrice ? "bg-[#eaeaea]" : ""}`} onClick={(_) => setBnPrice(true)}>BN</button>
 
-                <button className="me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px]" onClick={(_) => setBnPrice(false)}>Color</button>
+                <button className={`me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px] ${btnPrice ? "" : "bg-[#eaeaea]"}`} onClick={(_) => setBnPrice(false)}>Color</button>
 
             </div>
 
@@ -99,7 +119,7 @@ export default function SingleProduct({ item }) {
 
                 <div className='product-actions'>
 
-                    <Link to={'/buscar-apuntes/product?id=1'} onClick={_ => localStorage.setItem('active-proudct', JSON.stringify(item))} className="py-[13px] px-[12px] border border-[#ffc559] bg-white text-[#ffc559] rounded-[5px]">
+                    <Link to={`/buscar-apuntes/product?id=${item?.codigo}`} onClick={handleEyeClick} className="py-[13px] px-[12px] border border-[#ffc559] bg-white text-[#ffc559] rounded-[5px]">
 
                         <FontAwesomeIcon icon={faEye} />
 

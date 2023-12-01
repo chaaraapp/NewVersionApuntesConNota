@@ -12,6 +12,7 @@ const useDataSetter = (userInfo) => {
         paisEnvio: userInfo?.paisEnvio,
         movilEnvio: userInfo?.movilEnvio,
         telefonoEnvio: userInfo?.telefonoEnvio,
+        ciudadEnvio: userInfo?.ciudadEnvio,
         personaContacto: "string",
         email: userInfo?.email,
     });
@@ -29,6 +30,7 @@ const useDataSetter = (userInfo) => {
             paisEnvio: userInfo?.paisEnvio,
             movilEnvio: userInfo?.movilEnvio,
             telefonoEnvio: userInfo?.telefonoEnvio,
+            ciudadEnvio: userInfo?.ciudadEnvio,
             email: userInfo?.email,
         }))
 

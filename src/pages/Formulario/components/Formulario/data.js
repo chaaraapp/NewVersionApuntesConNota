@@ -5,6 +5,7 @@ const categories = [
     { name: "Nota minima:7", key: "A" },
     { name: "Subir el temario completo", key: "M" },
     { name: "Escritura a ordenador", key: "P" },
+    { name: "Formato PDF", key: "F" },
 ];
 
 export const renderCategories = () => {

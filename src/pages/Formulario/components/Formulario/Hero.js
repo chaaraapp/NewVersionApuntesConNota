@@ -7,22 +7,22 @@ export default function Hero() {
 
             <div className='container grid grid-cols-12 items-center'>
 
-                <h1 className='col-span-12 lg:col-span-4 lg:px-24 text-[20px] sm:text-[30px] text-center lg:text-start md:text-[50px] font-bold leading-[1]'>
-                    No regales
+                <p className='col-span-12 lg:col-span-4 lg:px-16  text-[25px] sm:text-[30px] text-center lg:text-start md:text-[50px] leading-[1]'>
+                    <span className='lg:whitespace-nowrap'>No regales</span>
                     <br className='hidden lg:block' />
-                    tus apuntes
+                    <span className='lg:whitespace-nowrap'>tus apuntes</span>
                     <br className='hidden lg:block' />
-                    en otras
+                    <span className='lg:whitespace-nowrap'>en otras</span>
                     <br className='hidden lg:block' />
                     plataformas
 
-                </h1>
+                </p>
 
-                <div className='hidden lg:grid place-content-center col-span-4'>   <img src={require("../../../../assetes/images/hero-bg.png")} className='max-w-full' /></div>
+                <div className='hidden lg:grid col-span-4'>   <img src={require("../../../../assetes/images/hero-bg.png")} className='max-w-full' /></div>
 
-                <div className='text-white font-bold mb-[13px] text-[20px] col-span-12 lg:col-span-4 flex items-center justify-center flex-col'>
+                <div className='text-white mb-[13px] text-[25px] col-span-12 lg:col-span-4 flex justify-center flex-col'>
 
-                    <h2 className='my-3 lg:my-0'>Requisitos:</h2>
+                    <p className='my-3 lg:my-0'>Requisitos:</p>
 
                     <div className='requisitos-card'>{renderCategories()}</div>
 

@@ -12,8 +12,6 @@ export default function Formulario({ isHasTitle, resumenApuntesData }) {
 
             <EnviarForm isHasTitle={isHasTitle} />
 
-            {isHasTitle && <div className='container'>  <Accordion /></div>}
-
             {!isHasTitle && <h3 className='mt-5 mb-5'>Resumen apuntes</h3>}
 
             {!isHasTitle && <div className='grid grid-cols-12 gap-5 p-5'>{renderResumenApuntesData(resumenApuntesData)}</div>}

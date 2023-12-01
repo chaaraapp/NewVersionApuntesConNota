@@ -15,7 +15,7 @@ export default function Product({ defaultItem, setTotalPrice }) {
     return (
         <div className='bg-[#f7f7f7] border rounded-[5px] p-3 flex items-center mb-3'>
 
-            <img src={require('../../../../assetes/images/buscar_apuntes_-_cuaderno_verde.png')} alt='' className='me-5 max-w-[220px]' />
+            <img src={require('../../../../assetes/images/buscar_apuntes_-_cuaderno_verde.png')} alt='' className='me-1 sm:me-5 max-w-[70px] sm:max-w-[220px]' />
 
             <div className='flex-1'>
 
@@ -25,13 +25,13 @@ export default function Product({ defaultItem, setTotalPrice }) {
 
                     <div className='me-5'>
 
-                        <p className='bg-[#004554] p-1 px-3 text-center mb-1 rounded-[5px] text-white'>{item?.curso}</p>
-                        <p className='bg-[#48c480] p-1 px-3 text-center rounded-[5px] text-white'>{item?.abreviaturaUniversidad}</p>
+                        <p className='bg-[#004554] p-1 px-3 text-center mb-1 rounded-[5px] text-[11px] sm:text-[16px] text-white'>{item?.curso}</p>
+                        <p className='bg-[#48c480] p-1 px-3 text-center rounded-[5px] text-[11px] sm:text-[16px] text-white'>{item?.abreviaturaUniversidad}</p>
 
                     </div>
 
-                    <button className={`${defaultItem?.bnButton !== false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] px-8 py-4 text-center me-3`} onClick={_ => handlePriceClick(item, true)}>BN</button>
-                    <button className={`${defaultItem?.bnButton === false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] px-8 py-4 text-center`} onClick={_ => handlePriceClick(item, false)}>Color</button>
+                    <button className={`${defaultItem?.bnButton !== false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] sm:px-8 sm:py-4 p-1 px-3 text-center me-3`} onClick={_ => handlePriceClick(item, true)}>BN</button>
+                    <button className={`${defaultItem?.bnButton === false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] sm:px-8 sm:py-4 p-1 px-3 text-center`} onClick={_ => handlePriceClick(item, false)}>Color</button>
 
                 </div>
 
@@ -39,15 +39,15 @@ export default function Product({ defaultItem, setTotalPrice }) {
 
                     <div>
 
-                        <Dropdown title={'Cant: '} selectedItem={selecteCount} setSelectedItem={setSelecteCount} list={productCount} styling={"w-[120px]"} />
+                        <Dropdown title={'Cant: '} selectedItem={selecteCount} setSelectedItem={setSelecteCount} list={productCount} styling={"w-fit sm:w-[120px] "} />
 
-                        <button onClick={_ => handleRemoveProduct(item, dispatchNewProducts)} className='bg-[#dbdbdb] w-[100px] p-2 border mx-3 rounded-[5px]'>Eliminar</button>
+                        <button onClick={_ => handleRemoveProduct(item, dispatchNewProducts)} className='bg-[#dbdbdb] w-fit sm:w-[100px] p-2 border mx-3 text-[11px] sm:text-[16px] rounded-[5px]'>Eliminar</button>
 
                     </div>
 
                     <h1 className='lg:text-[40px] font-medium '>
 
-                        {defaultItem?.bnButton !== false ? item?.newPrecioBN || item?.precioBN : item?.newPrecioCO || defaultItem?.precioCO} €
+                        {defaultItem?.bnButton !== false ? item?.newPrecioBN?.toFixed(2) || item?.precioBN?.toFixed(2) : item?.newPrecioCO?.toFixed(2) || defaultItem?.precioCO.toFixed(2)} €
 
                     </h1>
 

@@ -1,21 +1,20 @@
-import React from 'react'
-
 export default function Product() {
+
     return (
-        
+
         <section className='products my-5 !mb-32'>
 
             <div className='container'>
 
                 <div className='grid grid-cols-12 gap-2'>
 
-                    <div className='col-span-12 lg:col-span-5 mb-10 lg:mb-0'>
+                    <div className='col-span-12 lg:col-span-12 xl:col-span-5 mb-10 lg:mb-0'>
 
                         <div className='mb-4'>
 
                             <div className='flex items-center mb-2'>
 
-                                <img alt='' src={require('../../../../assetes/images/home - signo más verde.png')} className='w-[30px] inline-block me-2' />
+                                <img alt='' src={require('../../../../assetes/images/home - signo más verde.png')} className='w-[40px] inline-block me-2' />
 
                                 <h3 className='sm:text-[40px] text-[20px] font-bold text-[#004554]'>Apuntes impresos</h3>
 
@@ -29,7 +28,7 @@ export default function Product() {
 
                             <div className='flex items-center mb-2'>
 
-                                <img src={require('../../../../assetes/images/home - signo más verde.png')} alt='' className='w-[30px] inline-block me-2' />
+                                <img src={require('../../../../assetes/images/home - signo más verde.png')} alt='' className='w-[40px] inline-block me-2' />
 
                                 <h3 className='sm:text-[40px] text-[20px] font-bold text-[#004554]'> Temario completo  </h3>
 
@@ -47,11 +46,11 @@ export default function Product() {
 
                         <div className='mb-4'>
 
-                            <div className='flex items-center mb-2'>
+                            <div className='flex items-center mb-2 text-white'>
 
-                                <img src={require('../../../../assetes/images/home - signo más verde.png')} alt='' className='w-[30px] inline-block me-2' />
+                                <img src={require('../../../../assetes/images/home - signo más verde.png')} alt='' className='w-[40px] inline-block me-2' />
 
-                                <h3 className='sm:text-[40px] text-[20px] font-bold text-[#004554] sm:whitespace-nowrap'>  Autores con un 7 o mas </h3>
+                                <h3 className='sm:text-[40px] text-[20px] font-bold text-[#004554] sm:whitespace-nowrap'>  Autores con un 7 o más </h3>
 
                             </div>
 
@@ -63,7 +62,7 @@ export default function Product() {
 
                             <div className='flex items-center mb-2'>
 
-                                <img src={require('../../../../assetes/images/home - signo más verde.png')} alt='' className='w-[30px] inline-block me-2' />
+                                <img src={require('../../../../assetes/images/home - signo más verde.png')} alt='' className='w-[40px] inline-block me-2' />
 
                                 <h3 className='sm:text-[40px] text-[20px] font-bold text-[#004554]'>  Sin Publicidad </h3>
 
@@ -73,9 +72,9 @@ export default function Product() {
 
                     </div>
 
-                    <div className='col-span-12 lg:col-span-7'>
+                    <div className='col-span-12 lg:col-span-7 -order-1 lg:order-1'>
 
-                        <img src={require('../../../../assetes/images/comprar apuntes - apuntes.png')} alt='' className='max-w-full' />
+                        <img src={require('../../../../assetes/images/comprar apuntes - apuntes.png')} alt='' className='max-w-full lg:hidden xl:block w-[300px] m-auto lg:w-fit' />
 
                     </div>
 
