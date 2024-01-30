@@ -52,7 +52,7 @@ class Auth {
 
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('email', data?.Email);
-
+                sessionStorage.setItem('isRenderRegisterPopup', true);
                 window.location.href = "/";
 
             })
@@ -616,7 +616,7 @@ class Buscar {
             .then(response => {
 
                 this.state(response.data);
-                
+
                 if (!response.data?.length) {
 
                     setTimeout(() => {

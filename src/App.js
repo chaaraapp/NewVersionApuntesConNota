@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { Popup, ScrollReset } from './components';
+import { AuthPopup, Popup, ScrollReset, RegisterPopup } from './components';
 import { Header, Footer } from './layouts';
 import routes from './routes/routes';
 import { renderPopupLocation } from './assetes/utils/utils';
@@ -8,6 +8,8 @@ import { renderPopupLocation } from './assetes/utils/utils';
 function App() {
 
   const [showPopup, setShowPopup] = useState(false);
+
+  const renderRegisterPopup = sessionStorage.getItem('isRenderRegisterPopup');
 
   useEffect(() => {
 
@@ -30,6 +32,8 @@ function App() {
       <div className='h-[50px] bg-[#004554]'></div>
 
       {/* <Popup showPopup={showPopup} setShowPopup={setShowPopup} /> */}
+
+      {renderRegisterPopup ? <RegisterPopup /> : null}
 
       <ScrollReset />
 

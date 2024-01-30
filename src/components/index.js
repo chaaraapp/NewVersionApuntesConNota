@@ -11,3 +11,5 @@ export { default as Auth } from './Auth';
 export { default as Spiners } from './Spiners';
 export { default as Popup } from './Popup';
 export { default as ScrollReset } from './ScrollReset';
+export { default as AuthPopup } from './AuthPopup';
+export { default as RegisterPopup } from './RegisterPopup';

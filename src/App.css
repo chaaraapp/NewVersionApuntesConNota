@@ -162,10 +162,12 @@ li label:hover {
   margin-top: -70px !important;
   left: -30px !important;
 }
+
 .swiper-button-prev {
   border-left-color: transparent !important;
   border-right: 30px solid #bebebe;
 }
+
 .swiper-button-next {
   left: initial !important;
   right: -30px !important;

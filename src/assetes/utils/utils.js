@@ -90,7 +90,7 @@ const getTotalPrice = (products) => {
 }
 
 const addToCart = (item, dispatch) => {
-
+    ;
     const products = JSON.parse(localStorage.getItem('products'));
 
     if (products) {

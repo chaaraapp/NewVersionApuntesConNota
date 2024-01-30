@@ -91,9 +91,21 @@ export default function SingleProduct({ item }) {
 
             <div className='product-btns flex items-center justify-center'>
 
-                <button className={`me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px] ${btnPrice ? "bg-[#eaeaea]" : ""}`} onClick={(_) => setBnPrice(true)}>BN</button>
+                <button className={`me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px] ${btnPrice ? "bg-[#eaeaea]" : ""}`} onClick={(_) => {
 
-                <button className={`me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px] ${btnPrice ? "" : "bg-[#eaeaea]"}`} onClick={(_) => setBnPrice(false)}>Color</button>
+                    setBnPrice(true);
+
+                    item.bnButton = true;
+
+                }}>BN</button>
+
+                <button className={`me-[2px] py-[5px] px-[20px] border border-[#ccc] rounded-[5px] ${btnPrice ? "" : "bg-[#eaeaea]"}`} onClick={(_) => {
+
+                    setBnPrice(false);
+
+                    item.bnButton = false;
+
+                }}>Color</button>
 
             </div>
 

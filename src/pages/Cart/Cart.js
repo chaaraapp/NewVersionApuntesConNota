@@ -9,6 +9,7 @@ import { useState } from 'react';
 export default function Cart() {
 
     const products = useSelector(store => store.cart);
+
     const [totalPrice, setTotalPrice] = useState(0);
 
     return (
@@ -37,7 +38,7 @@ export default function Cart() {
 
                 </div>
 
-                <RelatedProducts className='col-span-12' />
+                {/* <RelatedProducts className='col-span-12' /> */}
 
             </div>
 

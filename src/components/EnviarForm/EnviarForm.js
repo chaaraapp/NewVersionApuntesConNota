@@ -5,6 +5,7 @@ import Loader from '../Loader';
 import { formatFileSize, VisuallyHiddenInput, useDataSetter, handleSubmit, useDataGetter, useGetLists, useResetInput } from './data';
 import FormAutocomplete from './components/FormAutocomplete/FormAutocomplete';
 import { fireSwal } from '../../assetes/utils/utils';
+import { Fragment } from 'react';
 
 
 export default function EnviarForm({ isHasTitle }) {
@@ -61,6 +62,20 @@ export default function EnviarForm({ isHasTitle }) {
                     <h1 className="font-medium mb-8 mt-8 text-[45px] text-[#004554] text-center">Rellena el formulario y empieza a vender</h1>
                     :
                     <h2 className='mb-5 font-bold text-[23px]'>Formulario de alta de apuntes</h2>
+                }
+
+                {
+                    isHasTitle
+                        ?
+                        <Fragment>
+                            <h1 className="font-medium mb-3 text-[25px] text-[#004554]">
+                                Paso 1: Registra tu cuenta.
+                                <Button variant="contained" className="!bg-[#ffc559] !text-[#004554] !capitalize !text-[20px] !ms-3 !px-8 !py-0 !rounded-none !font-bold !w-fit">Registrarme</Button>
+                            </h1>
+                            <h1 className="font-medium mb-8 text-[25px] text-[#004554]">Paso 2: Rellena el formulario y empieza a vender.</h1>
+                        </Fragment>
+                        :
+                        null
                 }
 
                 <div className='grid grid-cols-12 gap-5'>

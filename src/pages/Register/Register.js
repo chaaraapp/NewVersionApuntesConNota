@@ -29,7 +29,7 @@ const Register = () => {
                     <div className="input-container">
 
                         <input type="text" id="Apellidos" placeholder="Apellidos" onChange={e => handelChangeInput('Apellidos', e.target.value, setFormData)} name="Apellidos" className="w-full p-[10px] mb-[8px] rounded-[4px]"
-                            value={formData.Nombre} />
+                            value={formData.Apellidos} />
 
                     </div>
 

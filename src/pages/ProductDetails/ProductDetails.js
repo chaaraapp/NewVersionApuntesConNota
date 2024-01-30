@@ -2,12 +2,14 @@ import Button from '@mui/material/Button';
 import { RelatedProducts } from '../../components';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../assetes/utils/utils';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { ProductPDF } from '../../apis/apis';
 import { PDFViewr } from './components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose, faEye } from '@fortawesome/free-solid-svg-icons';
 import '@react-pdf-viewer/core/lib/styles/index.css';
+import { priceReducer, useGetInitailState } from '../Cart/Context';
+
 
 export default function ProductDetails() {
 
@@ -19,6 +21,10 @@ export default function ProductDetails() {
 
     const ProductPDFUtality = new ProductPDF();
 
+    const { initailState } = useGetInitailState();
+
+    const [cartState, setCartState] = useReducer(priceReducer, initailState);
+
     const [pdf, setPdf] = useState({});
 
     const dispatch = useDispatch();
@@ -28,6 +34,7 @@ export default function ProductDetails() {
         ProductPDFUtality.get(setPdf, item.codigo);
 
     }, []);
+
 
     return (
         <div>
@@ -131,9 +138,21 @@ export default function ProductDetails() {
 
                     <div className='flex items-center flex-wrap'>
 
-                        <button onClick={_ => setIsBnPrice(true)} className={` text-black border-2 rounded-[5px] transition px-3 sm:px-8 py-2 sm:py-4 text-center w-[46%] mb-5 sm:mb-0 sm:w-fit text-[13px] sm:text-[16px] me-3 ${isBnPrice ? "bg-[#eaeaea]" : ""}`}>BN</button>
+                        <button onClick={_ => {
 
-                        <button onClick={_ => setIsBnPrice(false)} className={`${isBnPrice ? "" : "bg-[#eaeaea]"} transition text-black border-2 rounded-[5px] w-[46%] mb-5 sm:mb-0 sm:w-fit text-[13px] sm:text-[16px] px-3 sm:px-8 py-2 sm:py-4 me-3 text-center`}>Color</button>
+                            setIsBnPrice(true);
+
+                            localStorage.setItem('active-proudct', JSON.stringify({ ...item, bnButton: true }));
+
+                        }} className={` text-black border-2 rounded-[5px] transition px-3 sm:px-8 py-2 sm:py-4 text-center w-[46%] mb-5 sm:mb-0 sm:w-fit text-[13px] sm:text-[16px] me-3 ${isBnPrice ? "bg-[#eaeaea]" : ""}`}>BN</button>
+
+                        <button onClick={_ => {
+
+                            setIsBnPrice(false);
+
+                            localStorage.setItem('active-proudct', JSON.stringify({ ...item, bnButton: false }));
+
+                        }} className={`${isBnPrice ? "" : "bg-[#eaeaea]"} transition text-black border-2 rounded-[5px] w-[46%] mb-5 sm:mb-0 sm:w-fit text-[13px] sm:text-[16px] px-3 sm:px-8 py-2 sm:py-4 me-3 text-center`}>Color</button>
 
                         <div className='relative'>
 
@@ -144,6 +163,38 @@ export default function ProductDetails() {
                         </div>
                     </div>
 
+                </div>
+
+                <div className='px-5 col-span-12'>
+
+                    <div className='flex'>
+
+                        <div className='w-[15px] h-[15px] rounded-full bg-[var(--primary)] mt-1 me-2'>  </div>
+
+                        <p className='mb-5'>
+
+                            <span className='!font-normal text-[#151616]'>Referncia: </span>
+
+                            <span className='!font-bold text-[#151616]'> ES23-8899834</span>
+
+                        </p>
+
+                    </div>
+                    <div className='flex'>
+
+                        <div className='min-w-[15px] h-[15px] rounded-full bg-[var(--primary)] mt-1 me-2'>  </div>
+
+                        <p className='text-[#151616] font-medium'>
+
+                            <p>Descripcion: </p>
+
+                            <span>
+                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            </span>
+
+                        </p>
+
+                    </div>
 
                 </div>
 

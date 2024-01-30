@@ -7,7 +7,7 @@ export default function Product({ defaultItem, setTotalPrice }) {
 
     const [item, setItem] = useState(defaultItem);
 
-    const { handlePriceClick, selecteCount, setSelecteCount, dispatchNewProducts, setCartState, productCount } = useDataGetter(item, setTotalPrice);
+    const { selecteCount, setSelecteCount, dispatchNewProducts, setCartState, productCount } = useDataGetter(item, setTotalPrice);
 
     // Update Product When Size Or Price Changeing
     const _ = useUpdatedProduct(selecteCount, item, setItem, setCartState);
@@ -30,8 +30,7 @@ export default function Product({ defaultItem, setTotalPrice }) {
 
                     </div>
 
-                    <button className={`${defaultItem?.bnButton !== false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] sm:px-8 sm:py-4 p-1 px-3 text-center me-3`} onClick={_ => handlePriceClick(item, true)}>BN</button>
-                    <button className={`${defaultItem?.bnButton === false ? "bg-[#b3f2d0]" : "bg-white"} text-black border rounded-[5px] sm:px-8 sm:py-4 p-1 px-3 text-center`} onClick={_ => handlePriceClick(item, false)}>Color</button>
+                    <button className={`bg-white transition hover:bg-[#b3f2d0] text-black border rounded-[5px] sm:px-8 sm:py-4 p-1 px-3 text-center me-3`}>{defaultItem?.bnButton ? "BN" : "Color"}</button>
 
                 </div>
 

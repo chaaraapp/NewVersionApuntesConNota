@@ -15,23 +15,13 @@ const useDataGetter = (item, setTotalPrice) => {
 
     const [selecteCount, setSelecteCount] = useState({ nombre: item?.size || 1, initail: true });
 
-    const handlePriceClick = (item, state) => {
-
-        const newItem = { ...item, bnButton: state };
-
-        dispatchNewProducts(updateCart(newItem));
-
-        setCartState({ type: "UPDATE_PRICE" });
-    };
-
-
     useEffect(() => {
 
         setTotalPrice(cartState.price);
 
     }, [cartState.price]);
 
-    return { handlePriceClick, selecteCount, setSelecteCount, dispatchNewProducts, setCartState, productCount }
+    return { selecteCount, setSelecteCount, dispatchNewProducts, setCartState, productCount }
 
 }
 
